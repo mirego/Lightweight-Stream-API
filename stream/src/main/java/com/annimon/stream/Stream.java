@@ -1,3 +1,4 @@
+
 package com.annimon.stream;
 
 import com.annimon.stream.function.*;
@@ -1912,7 +1913,7 @@ public class Stream<T> implements Closeable {
      * @return an {@code Optional} with the first element
      *         or {@code Optional.empty()} if stream is empty
      */
-    public Optional<T> findFirst() {
+    public Optional<? extends T> findFirst() {
         if (iterator.hasNext()) {
             return Optional.of(iterator.next());
         }

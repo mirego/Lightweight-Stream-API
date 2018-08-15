@@ -200,7 +200,7 @@ public class Optional<T> {
      * @throws NullPointerException if value is present and
      *         {@code mapper} is {@code null}
      */
-    public <U> Optional<U> map(Function<? super T, ? extends U> mapper) {
+    public <U> Optional<? extends U> map(Function<? super T, ? extends U> mapper) {
         if (!isPresent()) return empty();
         return Optional.ofNullable(mapper.apply(value));
     }
