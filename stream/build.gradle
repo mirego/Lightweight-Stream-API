@@ -5,7 +5,7 @@ apply plugin: 'mirego.publish'
 apply plugin: 'mirego.release'
 
 archivesBaseName = 'stream'
-group = 'com.annimon'
+group = 'com.mirego.annimon'
 ext.isReleaseVersion = !version.contains("SNAPSHOT")
 
 sourceCompatibility = '1.7'
