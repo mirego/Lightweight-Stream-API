@@ -1913,9 +1913,9 @@ public class Stream<T> implements Closeable {
      * @return an {@code Optional} with the first element
      *         or {@code Optional.empty()} if stream is empty
      */
-    public Optional<? extends T> findFirst() {
+    public Optional<T> findFirst() {
         if (iterator.hasNext()) {
-            return Optional.of(iterator.next());
+            return Optional.of((T)iterator.next());
         }
         return Optional.empty();
     }
