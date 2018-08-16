@@ -1,14 +1,15 @@
 apply plugin: 'java-library'
 apply plugin: 'maven'
 apply plugin: 'me.champeau.gradle.jmh'
+apply plugin: 'mirego.publish'
+apply plugin: 'mirego.release'
 
 archivesBaseName = 'stream'
-version = '1.2.1-SNAPSHOT'
 group = 'com.annimon'
 ext.isReleaseVersion = !version.contains("SNAPSHOT")
 
-sourceCompatibility = '1.6'
-targetCompatibility = '1.6'
+sourceCompatibility = '1.7'
+targetCompatibility = '1.7'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 if (!hasProperty('mainClass')) {
@@ -16,7 +17,9 @@ if (!hasProperty('mainClass')) {
 }
 
 repositories {
+    mavenLocal()
     jcenter()
+    delegate.miregoPublic()
 }
 
 dependencies {
@@ -40,4 +43,27 @@ jmh {
 // maven signing
 if (ext.isReleaseVersion) {
     apply from: 'signing.gradle'
+}
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.allJava
+    classifier = 'sources'
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+            artifact sourceJar
+        }
+    }
+}
+
+release {
+    checkTasks = ['check']
+    buildTasks = ['publish']
+
+    updateVersionPart = 2
+
+    tagPrefix = 'lightweight-stream-'
 }

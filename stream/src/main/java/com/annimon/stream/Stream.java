@@ -1,3 +1,4 @@
+
 package com.annimon.stream;
 
 import com.annimon.stream.function.*;
@@ -1914,7 +1915,7 @@ public class Stream<T> implements Closeable {
      */
     public Optional<T> findFirst() {
         if (iterator.hasNext()) {
-            return Optional.of(iterator.next());
+            return Optional.of((T)iterator.next());
         }
         return Optional.empty();
     }
