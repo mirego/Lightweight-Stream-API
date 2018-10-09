@@ -8,6 +8,7 @@
 /stream/target/
 /stream/build/
 /stream/out/
+/stream/stream-j2objc/
 /streamTest/target/
 /streamTest/build/
 /streamTest/out/

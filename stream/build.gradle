@@ -1,12 +1,13 @@
-apply plugin: 'java-library'
-apply plugin: 'maven'
-apply plugin: 'me.champeau.gradle.jmh'
-apply plugin: 'mirego.publish'
-apply plugin: 'mirego.release'
+plugins {
+    id 'java-library'
+    id 'me.champeau.gradle.jmh'
+    id 'mirego.publish' version '1.0'
+    id 'mirego.release' version '1.10'
+    id 'mirego.j2objc' version '1.49'
+}
 
 archivesBaseName = 'stream'
 group = 'com.mirego.annimon'
-ext.isReleaseVersion = !version.contains("SNAPSHOT")
 
 sourceCompatibility = '1.7'
 targetCompatibility = '1.7'
@@ -40,14 +41,29 @@ jmh {
     iterations = 5
 }
 
-// maven signing
-if (ext.isReleaseVersion) {
-    apply from: 'signing.gradle'
-}
-
 task sourceJar(type: Jar) {
     from sourceSets.main.allJava
     classifier = 'sources'
+}
+
+j2objc {
+    version = '1.0.0.2'
+
+    podName = 'lightweight-stream-api'
+    prefixes = [
+            'com.annimon.stream.*': ''
+    ]
+    incremental = false
+    lintAllowWarnings = true
+}
+
+release {
+    checkTasks = ['check']
+    buildTasks = ['publish', 'j2objc_repo_push_quick']
+
+    updateVersionPart = 2
+
+    tagPrefix = 'lightweight-stream-'
 }
 
 publishing {
@@ -55,15 +71,7 @@ publishing {
         maven(MavenPublication) {
             from components.java
             artifact sourceJar
+            artifact j2objc_zip
         }
     }
-}
-
-release {
-    checkTasks = ['check']
-    buildTasks = ['publish']
-
-    updateVersionPart = 2
-
-    tagPrefix = 'lightweight-stream-'
 }
