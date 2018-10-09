@@ -1,0 +1,18 @@
+Pod::Spec.new do |s|
+  s.name     = 'lightweight-stream-api'
+  s.version  = '${project.version}'
+  s.license  = { :type => 'PRIVATE', :text => 'PRIVATE' }
+  s.summary  = 'Stream api port to Java 7.'
+  s.homepage = 'http://www.mirego.com'
+  s.authors  = { 'Mirego, Inc.' => 'info@mirego.com' }
+  s.source   = { :http => "${sourceUrl}",
+                 :sha1 => '${sourceSha1}' }
+  s.requires_arc = true
+
+  s.ios.deployment_target = '7.0'
+  s.osx.deployment_target = '10.11'
+  s.watchos.deployment_target = '2.0'
+  s.tvos.deployment_target = '9.0'
+
+  s.source_files = 'stream-j2objc/**/*.{h,m}'
+end
