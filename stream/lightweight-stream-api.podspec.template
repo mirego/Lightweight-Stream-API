@@ -16,4 +16,5 @@ Pod::Spec.new do |s|
 
   s.source_files = 'stream-j2objc/**/*.{h,m}'
   s.dependency 'J2ObjC@mirego', '1.0.0.2'
+  s.compiler_flags = '-fobjc-arc-exceptions'
 end
