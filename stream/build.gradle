@@ -51,7 +51,7 @@ j2objc {
 
     podName = 'lightweight-stream-api'
     prefixes = [
-            'com.annimon.stream.*': ''
+            'com.annimon.stream.*': 'CAS'
     ]
     incremental = false
     lintAllowWarnings = true
