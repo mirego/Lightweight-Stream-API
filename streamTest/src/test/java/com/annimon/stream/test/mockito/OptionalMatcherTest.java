@@ -1,6 +1,6 @@
 package com.annimon.stream.test.mockito;
 
-import com.annimon.stream.CompatOptional;
+import com.annimon.stream.Optional;
 import com.annimon.stream.test.mockito.OptionalMatcher.EmptyOptionalMatcher;
 import com.annimon.stream.test.mockito.OptionalMatcher.PresentOptionalMatcher;
 
@@ -19,12 +19,12 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public final class CompatOptionalMatcherTest {
+public final class OptionalMatcherTest {
 
-    private static final CompatOptional<Object> PRESENT_OBJECT_COMPAT_OPTIONAL = CompatOptional.of(new Object());
-    private static final CompatOptional<Object> EMPTY_OBJECT_COMPAT_OPTIONAL = CompatOptional.empty();
-    private static final CompatOptional<String> PRESENT_STRING_COMPAT_OPTIONAL = CompatOptional.of("ANY_STRING");
-    private static final CompatOptional<String> EMPTY_STRING_COMPAT_OPTIONAL = CompatOptional.empty();
+    private static final Optional<Object> PRESENT_OBJECT_OPTIONAL = Optional.of(new Object());
+    private static final Optional<Object> EMPTY_OBJECT_OPTIONAL = Optional.empty();
+    private static final Optional<String> PRESENT_STRING_OPTIONAL = Optional.of("ANY_STRING");
+    private static final Optional<String> EMPTY_STRING_OPTIONAL = Optional.empty();
 
     @Test
     public void testPrivateConstructor() throws Exception {
@@ -35,8 +35,8 @@ public final class CompatOptionalMatcherTest {
     public void testPresentOptionalMatcherMatching() {
         PresentOptionalMatcher<Object> matcher = new PresentOptionalMatcher<Object>();
 
-        assertTrue(matcher.matches(PRESENT_OBJECT_COMPAT_OPTIONAL));
-        assertFalse(matcher.matches(EMPTY_OBJECT_COMPAT_OPTIONAL));
+        assertTrue(matcher.matches(PRESENT_OBJECT_OPTIONAL));
+        assertFalse(matcher.matches(EMPTY_OBJECT_OPTIONAL));
         assertFalse(matcher.matches(null));
     }
 
@@ -52,15 +52,15 @@ public final class CompatOptionalMatcherTest {
         Foo foo = Mockito.mock(Foo.class);
         when(foo.barObject(anyPresentOptional())).thenReturn(true);
 
-        assertFalse(foo.barObject(EMPTY_OBJECT_COMPAT_OPTIONAL));
-        assertTrue(foo.barObject(PRESENT_OBJECT_COMPAT_OPTIONAL));
+        assertFalse(foo.barObject(EMPTY_OBJECT_OPTIONAL));
+        assertTrue(foo.barObject(PRESENT_OBJECT_OPTIONAL));
     }
 
     @Test
     public void testAnyPresentObjectOptionalWhenVerifying() {
         Foo foo = Mockito.mock(Foo.class);
 
-        foo.barObject(PRESENT_OBJECT_COMPAT_OPTIONAL);
+        foo.barObject(PRESENT_OBJECT_OPTIONAL);
 
         verify(foo, times(1)).barObject(anyPresentOptional());
         verify(foo, never()).barObject(anyEmptyOptional());
@@ -71,15 +71,15 @@ public final class CompatOptionalMatcherTest {
         Foo foo = Mockito.mock(Foo.class);
         when(foo.barString(anyPresentOptional(String.class))).thenReturn(true);
 
-        assertFalse(foo.barString(EMPTY_STRING_COMPAT_OPTIONAL));
-        assertTrue(foo.barString(PRESENT_STRING_COMPAT_OPTIONAL));
+        assertFalse(foo.barString(EMPTY_STRING_OPTIONAL));
+        assertTrue(foo.barString(PRESENT_STRING_OPTIONAL));
     }
 
     @Test
     public void testAnyPresentStringOptionalWhenVerifying() {
         Foo foo = Mockito.mock(Foo.class);
 
-        foo.barString(PRESENT_STRING_COMPAT_OPTIONAL);
+        foo.barString(PRESENT_STRING_OPTIONAL);
 
         verify(foo, times(1)).barString(anyPresentOptional(String.class));
         verify(foo, never()).barString(anyEmptyOptional(String.class));
@@ -89,8 +89,8 @@ public final class CompatOptionalMatcherTest {
     public void testEmptyOptionalMatcherMatching() {
         EmptyOptionalMatcher<Object> matcher = new EmptyOptionalMatcher<Object>();
 
-        assertFalse(matcher.matches(PRESENT_OBJECT_COMPAT_OPTIONAL));
-        assertTrue(matcher.matches(EMPTY_OBJECT_COMPAT_OPTIONAL));
+        assertFalse(matcher.matches(PRESENT_OBJECT_OPTIONAL));
+        assertTrue(matcher.matches(EMPTY_OBJECT_OPTIONAL));
         assertFalse(matcher.matches(null));
     }
 
@@ -106,15 +106,15 @@ public final class CompatOptionalMatcherTest {
         Foo foo = Mockito.mock(Foo.class);
         when(foo.barObject(anyEmptyOptional())).thenReturn(true);
 
-        assertTrue(foo.barObject(EMPTY_OBJECT_COMPAT_OPTIONAL));
-        assertFalse(foo.barObject(PRESENT_OBJECT_COMPAT_OPTIONAL));
+        assertTrue(foo.barObject(EMPTY_OBJECT_OPTIONAL));
+        assertFalse(foo.barObject(PRESENT_OBJECT_OPTIONAL));
     }
 
     @Test
     public void testAnyEmptyObjectOptionalWhenVerifying() {
         Foo foo = Mockito.mock(Foo.class);
 
-        foo.barObject(EMPTY_OBJECT_COMPAT_OPTIONAL);
+        foo.barObject(EMPTY_OBJECT_OPTIONAL);
 
         verify(foo, never()).barObject(anyPresentOptional());
         verify(foo, times(1)).barObject(anyEmptyOptional());
@@ -125,23 +125,23 @@ public final class CompatOptionalMatcherTest {
         Foo foo = Mockito.mock(Foo.class);
         when(foo.barString(anyEmptyOptional(String.class))).thenReturn(true);
 
-        assertTrue(foo.barString(EMPTY_STRING_COMPAT_OPTIONAL));
-        assertFalse(foo.barString(PRESENT_STRING_COMPAT_OPTIONAL));
+        assertTrue(foo.barString(EMPTY_STRING_OPTIONAL));
+        assertFalse(foo.barString(PRESENT_STRING_OPTIONAL));
     }
 
     @Test
     public void testAnyEmptyStringOptionalWhenVerifying() {
         Foo foo = Mockito.mock(Foo.class);
 
-        foo.barString(EMPTY_STRING_COMPAT_OPTIONAL);
+        foo.barString(EMPTY_STRING_OPTIONAL);
 
         verify(foo, never()).barString(anyPresentOptional(String.class));
         verify(foo, times(1)).barString(anyEmptyOptional(String.class));
     }
 
     private interface Foo {
-        boolean barObject(CompatOptional<Object> argument);
+        boolean barObject(Optional<Object> argument);
 
-        boolean barString(CompatOptional<String> argument);
+        boolean barString(Optional<String> argument);
     }
 }

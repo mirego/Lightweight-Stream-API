@@ -1616,7 +1616,7 @@ public class Stream<T> implements Closeable {
      * @return the result of the reduction
      * @see #reduce(java.lang.Object, com.annimon.stream.function.BiFunction)
      */
-    public CompatOptional<T> reduce(BiFunction<T, T, T> accumulator) {
+    public Optional<T> reduce(BiFunction<T, T, T> accumulator) {
         boolean foundAny = false;
         T result = null;
         while (iterator.hasNext()) {
@@ -1628,7 +1628,7 @@ public class Stream<T> implements Closeable {
                 result = accumulator.apply(result, value);
             }
         }
-        return foundAny ? CompatOptional.of(result) : CompatOptional.<T>empty();
+        return foundAny ? Optional.of(result) : Optional.<T>empty();
     }
 
     /**
@@ -1739,7 +1739,7 @@ public class Stream<T> implements Closeable {
      * @param comparator  the {@code Comparator} to compare elements
      * @return the minimum element
      */
-    public CompatOptional<T> min(Comparator<? super T> comparator) {
+    public Optional<T> min(Comparator<? super T> comparator) {
         return reduce(BinaryOperator.Util.<T>minBy(comparator));
     }
 
@@ -1758,7 +1758,7 @@ public class Stream<T> implements Closeable {
      * @param comparator  the {@code Comparator} to compare elements
      * @return the maximum element
      */
-    public CompatOptional<T> max(Comparator<? super T> comparator) {
+    public Optional<T> max(Comparator<? super T> comparator) {
         return reduce(BinaryOperator.Util.<T>maxBy(comparator));
     }
 
@@ -1857,15 +1857,15 @@ public class Stream<T> implements Closeable {
      * predicate: (index, value) -&gt; index + value == 7
      * stream: [1, 2, 3, 4, 5, 2, 0]
      * index:  [0, 1, 2, 3, 4, 5, 6]
-     * result: CompatOptional.of(IntPair(3, 4))
+     * result: Optional.of(IntPair(3, 4))
      * </pre>
      *
      * @param predicate  the predicate to find value
-     * @return an {@code CompatOptional} with {@code IntPair}
-     *         or {@code CompatOptional.empty()} if stream is empty or no value was found.
+     * @return an {@code Optional} with {@code IntPair}
+     *         or {@code Optional.empty()} if stream is empty or no value was found.
      * @since 1.1.8
      */
-    public CompatOptional<IntPair<T>> findIndexed(IndexedPredicate<? super T> predicate) {
+    public Optional<IntPair<T>> findIndexed(IndexedPredicate<? super T> predicate) {
         return findIndexed(0, 1, predicate);
     }
 
@@ -1881,56 +1881,56 @@ public class Stream<T> implements Closeable {
      * predicate: (index, value) -&gt; index + value == 42
      * stream: [1, 11, 22, 12, 40]
      * index:  [0, 10, 20, 30, 40]
-     * result: CompatOptional.of(IntPair(20, 22))
+     * result: Optional.of(IntPair(20, 22))
      * </pre>
      *
      * @param from  the initial value of the index (inclusive)
      * @param step  the step of the index
      * @param predicate  the predicate to find value
-     * @return an {@code CompatOptional} with {@code IntPair}
-     *         or {@code CompatOptional.empty()} if stream is empty or no value was found.
+     * @return an {@code Optional} with {@code IntPair}
+     *         or {@code Optional.empty()} if stream is empty or no value was found.
      * @since 1.1.8
      */
-    public CompatOptional<IntPair<T>> findIndexed(int from, int step,
-                                                  IndexedPredicate<? super T> predicate) {
+    public Optional<IntPair<T>> findIndexed(int from, int step,
+                                            IndexedPredicate<? super T> predicate) {
         int index = from;
         while (iterator.hasNext()) {
             final T value = iterator.next();
             if (predicate.test(index, value)) {
-                return CompatOptional.of(new IntPair<T>(index, value));
+                return Optional.of(new IntPair<T>(index, value));
             }
             index += step;
         }
-        return CompatOptional.empty();
+        return Optional.empty();
     }
 
     /**
-     * Returns the first element wrapped by {@code CompatOptional} class.
-     * If stream is empty, returns {@code CompatOptional.empty()}.
+     * Returns the first element wrapped by {@code Optional} class.
+     * If stream is empty, returns {@code Optional.empty()}.
      *
      * <p>This is a short-circuiting terminal operation.
      *
-     * @return an {@code CompatOptional} with the first element
-     *         or {@code CompatOptional.empty()} if stream is empty
+     * @return an {@code Optional} with the first element
+     *         or {@code Optional.empty()} if stream is empty
      */
-    public CompatOptional<T> findFirst() {
+    public Optional<T> findFirst() {
         if (iterator.hasNext()) {
-            return CompatOptional.of((T)iterator.next());
+            return Optional.of((T)iterator.next());
         }
-        return CompatOptional.empty();
+        return Optional.empty();
     }
 
     /**
-     * Returns the last element wrapped by {@code CompatOptional} class.
-     * If stream is empty, returns {@code CompatOptional.empty()}.
+     * Returns the last element wrapped by {@code Optional} class.
+     * If stream is empty, returns {@code Optional.empty()}.
      *
      * <p>This is a short-circuiting terminal operation.
      *
-     * @return an {@code CompatOptional} with the last element
-     *         or {@code CompatOptional.empty()} if the stream is empty
+     * @return an {@code Optional} with the last element
+     *         or {@code Optional.empty()} if the stream is empty
      * @since 1.1.8
      */
-    public CompatOptional<T> findLast() {
+    public Optional<T> findLast() {
         return reduce(new BinaryOperator<T>() {
             @Override
             public T apply(T left, T right) {
@@ -1977,8 +1977,8 @@ public class Stream<T> implements Closeable {
     }
 
     /**
-     * Returns the single element wrapped by {@code CompatOptional} class.
-     * If stream is empty, returns {@code CompatOptional.empty()}.
+     * Returns the single element wrapped by {@code Optional} class.
+     * If stream is empty, returns {@code Optional.empty()}.
      * If stream contains more than one element, throws {@code IllegalStateException}.
      *
      * <p>This is a short-circuiting terminal operation.
@@ -1986,29 +1986,29 @@ public class Stream<T> implements Closeable {
      * <p>Example:
      * <pre>
      * stream: []
-     * result: CompatOptional.empty()
+     * result: Optional.empty()
      *
      * stream: [1]
-     * result: CompatOptional.of(1)
+     * result: Optional.of(1)
      *
      * stream: [1, 2, 3]
      * result: IllegalStateException
      * </pre>
      *
-     * @return an {@code CompatOptional} with single element or {@code CompatOptional.empty()} if stream is empty
+     * @return an {@code Optional} with single element or {@code Optional.empty()} if stream is empty
      * @throws IllegalStateException if stream contains more than one element
      * @since 1.1.2
      */
-    public CompatOptional<T> findSingle() {
+    public Optional<T> findSingle() {
         if (iterator.hasNext()) {
             T singleCandidate = iterator.next();
             if (iterator.hasNext()) {
                 throw new IllegalStateException("Stream contains more than one element");
             } else {
-                return CompatOptional.of(singleCandidate);
+                return Optional.of(singleCandidate);
             }
         } else {
-            return CompatOptional.empty();
+            return Optional.empty();
         }
     }
 

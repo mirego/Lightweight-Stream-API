@@ -1,7 +1,7 @@
 package com.annimon.stream.streamtests;
 
 import com.annimon.stream.Functions;
-import com.annimon.stream.CompatOptional;
+import com.annimon.stream.Optional;
 import com.annimon.stream.Stream;
 import com.annimon.stream.test.hamcrest.OptionalMatcher;
 import org.junit.Test;
@@ -14,7 +14,7 @@ public final class MaxTest {
 
     @Test
     public void testMax() {
-        CompatOptional<Integer> max = Stream.of(6, 3, 9, 0, -7, 19)
+        Optional<Integer> max = Stream.of(6, 3, 9, 0, -7, 19)
                 .max(Functions.naturalOrder());
 
         assertThat(max, isPresent());
@@ -24,7 +24,7 @@ public final class MaxTest {
 
     @Test
     public void testMaxDescendingOrder() {
-        CompatOptional<Integer> max = Stream.of(6, 3, 9, 0, -7, 19)
+        Optional<Integer> max = Stream.of(6, 3, 9, 0, -7, 19)
                 .max(Functions.descendingAbsoluteOrder());
 
         assertThat(max, isPresent());
@@ -34,7 +34,7 @@ public final class MaxTest {
 
     @Test
     public void testMaxEmpty() {
-        CompatOptional<Integer> max = Stream.<Integer>empty()
+        Optional<Integer> max = Stream.<Integer>empty()
                 .max(Functions.naturalOrder());
 
         assertThat(max, OptionalMatcher.isEmpty());

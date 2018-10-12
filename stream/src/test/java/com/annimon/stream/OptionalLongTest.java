@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
 /**
  * Tests for {@link OptionalLong}
  */
-public class CompatOptionalLongTest {
+public class OptionalLongTest {
 
     @Test
     public void testGetWithPresentValue() {
@@ -296,7 +296,7 @@ public class CompatOptionalLongTest {
             }
         };
 
-        CompatOptional<String> result;
+        Optional<String> result;
         result = OptionalLong.empty().mapToObj(asciiToString);
         assertThat(result, OptionalMatcher.isEmpty());
 
@@ -419,7 +419,7 @@ public class CompatOptionalLongTest {
     @Test
     public void testEquals() {
         assertEquals(OptionalLong.empty(), OptionalLong.empty());
-        assertNotEquals(OptionalLong.empty(), CompatOptional.empty());
+        assertNotEquals(OptionalLong.empty(), Optional.empty());
 
         assertEquals(OptionalLong.of(42), OptionalLong.of(42));
 

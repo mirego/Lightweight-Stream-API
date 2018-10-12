@@ -23,7 +23,7 @@ import static org.junit.Assert.*;
 /**
  * Tests for {@link OptionalInt}
  */
-public class CompatOptionalIntTest {
+public class OptionalIntTest {
 
     @Test
     public void testGetWithPresentValue() {
@@ -281,7 +281,7 @@ public class CompatOptionalIntTest {
             }
         };
 
-        CompatOptional<String> result;
+        Optional<String> result;
         result = OptionalInt.empty().mapToObj(asciiToString);
         assertThat(result, OptionalMatcher.isEmpty());
 
@@ -438,7 +438,7 @@ public class CompatOptionalIntTest {
     @Test
     public void testEquals() {
         assertEquals(OptionalInt.empty(), OptionalInt.empty());
-        assertNotEquals(OptionalInt.empty(), CompatOptional.empty());
+        assertNotEquals(OptionalInt.empty(), Optional.empty());
 
         assertEquals(OptionalInt.of(42), OptionalInt.of(42));
 

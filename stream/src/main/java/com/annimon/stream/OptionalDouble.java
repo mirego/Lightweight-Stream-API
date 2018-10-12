@@ -15,7 +15,7 @@ import java.util.NoSuchElementException;
  * A container object which may or may not contain a {@code double} value.
  *
  * @since 1.1.4
- * @see CompatOptional
+ * @see Optional
  */
 @SuppressWarnings("WeakerAccess")
 public final class OptionalDouble {
@@ -213,17 +213,17 @@ public final class OptionalDouble {
      *
      * @param <U> the type of result value
      * @param mapper  mapping function
-     * @return an {@code CompatOptional} with transformed value if present,
-     *         otherwise an empty {@code CompatOptional}
+     * @return an {@code Optional} with transformed value if present,
+     *         otherwise an empty {@code Optional}
      * @throws NullPointerException if value is present and
      *         {@code mapper} is {@code null}
      */
-    public <U> CompatOptional<U> mapToObj(DoubleFunction<U> mapper) {
+    public <U> Optional<U> mapToObj(DoubleFunction<U> mapper) {
         if (!isPresent()) {
-            return CompatOptional.empty();
+            return Optional.empty();
         }
         Objects.requireNonNull(mapper);
-        return CompatOptional.ofNullable(mapper.apply(value));
+        return Optional.ofNullable(mapper.apply(value));
     }
 
     /**

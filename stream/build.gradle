@@ -57,6 +57,32 @@ j2objc {
     lintAllowWarnings = true
 }
 
+tasks['j2objc'].doLast {
+    // Some hacking:
+    // The following files generate header file names that clash with jre-emul after transpilling:
+    // Optional.java
+    // Function.java
+    // Objects.java
+    // Predicate.java
+    // Supplier.java
+    //
+    // Renaming header and source files to CAS*.h and CAS*.m and the --header-mapping replace the #include references.
+
+    renameHeader('Optional', 'CAS')
+    renameHeader('Function', 'CAS')
+    renameHeader('Objects', 'CAS')
+    renameHeader('Predicate', 'CAS')
+    renameHeader('Supplier', 'CAS')
+}
+
+def renameHeader(fileName, prefix) {
+    def genDir = file(project.extensions['j2objc'].generatedDir)
+    new File(genDir, fileName +'.h').renameTo(new File(genDir, prefix + fileName + '.h'))
+    def mFile = new File(genDir, fileName + '.m')
+    mFile.text = mFile.text.replaceAll('#include "' + fileName + '.h"', '#include "' + prefix + fileName + '.h"')
+    mFile.renameTo(new File(genDir, prefix + fileName+ '.m'))
+}
+
 release {
     checkTasks = ['check']
     buildTasks = ['publish', 'j2objc_repo_push_quick']
