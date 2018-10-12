@@ -16,53 +16,53 @@ import java.util.NoSuchElementException;
  *
  * @param <T> the type of the inner value
  */
-public class Optional<T> {
+public class CompatOptional<T> {
 
-    private static final Optional<?> EMPTY = new Optional();
+    private static final CompatOptional<?> EMPTY = new CompatOptional();
 
     /**
-     * Returns an {@code Optional} with the specified present non-null value.
+     * Returns an {@code CompatOptional} with the specified present non-null value.
      *
      * @param <T> the type of value
      * @param value  the value to be present, must be non-null
-     * @return an {@code Optional}
+     * @return an {@code CompatOptional}
      * @throws NullPointerException if value is null
      * @see #ofNullable(java.lang.Object)
      */
-    public static <T> Optional<T> of(T value) {
-        return new Optional<T>(value);
+    public static <T> CompatOptional<T> of(T value) {
+        return new CompatOptional<T>(value);
     }
 
     /**
-     * Returns an {@code Optional} with the specified value, or empty {@code Optional} if value is null.
+     * Returns an {@code CompatOptional} with the specified value, or empty {@code CompatOptional} if value is null.
      *
      * @param <T> the type of value
      * @param value  the value which can be null
-     * @return an {@code Optional}
+     * @return an {@code CompatOptional}
      * @see #of(java.lang.Object)
      */
-    public static <T> Optional<T> ofNullable(T value) {
-        return value == null ? Optional.<T>empty() : of(value);
+    public static <T> CompatOptional<T> ofNullable(T value) {
+        return value == null ? CompatOptional.<T>empty() : of(value);
     }
 
     /**
-     * Returns an empty {@code Optional}.
+     * Returns an empty {@code CompatOptional}.
      *
      * @param <T> the type of value
-     * @return an {@code Optional}
+     * @return an {@code CompatOptional}
      */
     @SuppressWarnings("unchecked")
-    public static <T> Optional<T> empty() {
-        return (Optional<T>) EMPTY;
+    public static <T> CompatOptional<T> empty() {
+        return (CompatOptional<T>) EMPTY;
     }
 
     private final T value;
 
-    private Optional() {
+    private CompatOptional() {
         this.value = null;
     }
 
-    private Optional(T value) {
+    private CompatOptional(T value) {
         this.value = Objects.requireNonNull(value);
     }
 
@@ -71,7 +71,7 @@ public class Optional<T> {
      *
      * Since 1.2.0 prefer {@link #orElseThrow()} method as it has readable name.
      *
-     * @return the inner value of {@code Optional}
+     * @return the inner value of {@code CompatOptional}
      * @throws NoSuchElementException if value is not present
      * @see #orElseThrow()
      */
@@ -130,11 +130,11 @@ public class Optional<T> {
      * This method same as {@code ifPresent}, but does not breaks chaining
      *
      * @param consumer  consumer function
-     * @return this {@code Optional}
+     * @return this {@code CompatOptional}
      * @see #ifPresent(com.annimon.stream.function.Consumer)
      * @since 1.1.2
      */
-    public Optional<T> executeIfPresent(Consumer<? super T> consumer) {
+    public CompatOptional<T> executeIfPresent(Consumer<? super T> consumer) {
         ifPresent(consumer);
         return this;
     }
@@ -143,17 +143,17 @@ public class Optional<T> {
      * Invokes action function if value is absent.
      *
      * @param action  action that invokes if value absent
-     * @return this {@code Optional}
+     * @return this {@code CompatOptional}
      * @since 1.1.2
      */
-    public Optional<T> executeIfAbsent(Runnable action) {
+    public CompatOptional<T> executeIfAbsent(Runnable action) {
         if (value == null)
             action.run();
         return this;
     }
 
     /**
-     * Applies custom operator on {@code Optional}.
+     * Applies custom operator on {@code CompatOptional}.
      *
      * @param <R> the type of the result
      * @param function  a transforming function
@@ -161,7 +161,7 @@ public class Optional<T> {
      * @throws NullPointerException if {@code function} is null
      * @since 1.1.9
      */
-    public <R> R custom(Function<Optional<T>, R> function) {
+    public <R> R custom(Function<CompatOptional<T>, R> function) {
         Objects.requireNonNull(function);
         return function.apply(this);
     }
@@ -170,23 +170,23 @@ public class Optional<T> {
      * Performs filtering on inner value if it is present.
      *
      * @param predicate  a predicate function
-     * @return this {@code Optional} if the value is present and matches predicate,
-     *              otherwise an empty {@code Optional}
+     * @return this {@code CompatOptional} if the value is present and matches predicate,
+     *              otherwise an empty {@code CompatOptional}
      */
-    public Optional<T> filter(Predicate<? super T> predicate) {
+    public CompatOptional<T> filter(Predicate<? super T> predicate) {
         if (!isPresent()) return this;
-        return predicate.test(value) ? this : Optional.<T>empty();
+        return predicate.test(value) ? this : CompatOptional.<T>empty();
     }
 
     /**
      * Performs negated filtering on inner value if it is present.
      *
      * @param predicate  a predicate function
-     * @return this {@code Optional} if the value is present and doesn't matches predicate,
-     *              otherwise an empty {@code Optional}
+     * @return this {@code CompatOptional} if the value is present and doesn't matches predicate,
+     *              otherwise an empty {@code CompatOptional}
      * @since 1.1.9
      */
-    public Optional<T> filterNot(Predicate<? super T> predicate) {
+    public CompatOptional<T> filterNot(Predicate<? super T> predicate) {
         return filter(Predicate.Util.negate(predicate));
     }
 
@@ -195,14 +195,14 @@ public class Optional<T> {
      *
      * @param <U> the type of result value
      * @param mapper  mapping function
-     * @return an {@code Optional} with transformed value if present,
-     *         otherwise an empty {@code Optional}
+     * @return an {@code CompatOptional} with transformed value if present,
+     *         otherwise an empty {@code CompatOptional}
      * @throws NullPointerException if value is present and
      *         {@code mapper} is {@code null}
      */
-    public <U> Optional<U> map(Function<? super T, ? extends U> mapper) {
+    public <U> CompatOptional<U> map(Function<? super T, ? extends U> mapper) {
         if (!isPresent()) return empty();
-        return Optional.ofNullable((U)mapper.apply(value));
+        return CompatOptional.ofNullable((U)mapper.apply(value));
     }
 
     /**
@@ -265,13 +265,13 @@ public class Optional<T> {
     }
 
     /**
-     * Invokes mapping function with {@code Optional} result if value is present.
+     * Invokes mapping function with {@code CompatOptional} result if value is present.
      *
      * @param <U> the type of result value
      * @param mapper  mapping function
-     * @return an {@code Optional} with transformed value if present, otherwise an empty {@code Optional}
+     * @return an {@code CompatOptional} with transformed value if present, otherwise an empty {@code CompatOptional}
      */
-    public <U> Optional<U> flatMap(Function<? super T, Optional<U>> mapper) {
+    public <U> CompatOptional<U> flatMap(Function<? super T, CompatOptional<U>> mapper) {
         if (!isPresent()) return empty();
         return Objects.requireNonNull(mapper.apply(value));
     }
@@ -292,26 +292,26 @@ public class Optional<T> {
      *
      * @param <R> a type of instance to select.
      * @param clazz a class which instance should be selected
-     * @return an {@code Optional} with value of type class if present, otherwise an empty {@code Optional}
+     * @return an {@code CompatOptional} with value of type class if present, otherwise an empty {@code CompatOptional}
      */
     @SuppressWarnings("unchecked")
-    public <R> Optional<R> select(Class<R> clazz) {
+    public <R> CompatOptional<R> select(Class<R> clazz) {
         Objects.requireNonNull(clazz);
         if (!isPresent()) return empty();
-        return (Optional<R>) Optional.ofNullable(clazz.isInstance(value) ? value : null);
+        return (CompatOptional<R>) CompatOptional.ofNullable(clazz.isInstance(value) ? value : null);
     }
 
     /**
-     * Returns current {@code Optional} if value is present, otherwise
-     * returns an {@code Optional} produced by supplier function.
+     * Returns current {@code CompatOptional} if value is present, otherwise
+     * returns an {@code CompatOptional} produced by supplier function.
      *
-     * @param supplier  supplier function that produces an {@code Optional} to be returned
-     * @return this {@code Optional} if value is present, otherwise
-     *         an {@code Optional} produced by supplier function
+     * @param supplier  supplier function that produces an {@code CompatOptional} to be returned
+     * @return this {@code CompatOptional} if value is present, otherwise
+     *         an {@code CompatOptional} produced by supplier function
      * @throws NullPointerException if value is not present and
      *         {@code supplier} or value produced by it is {@code null}
      */
-    public Optional<T> or(Supplier<Optional<T>> supplier) {
+    public CompatOptional<T> or(Supplier<CompatOptional<T>> supplier) {
         if (isPresent()) return this;
         Objects.requireNonNull(supplier);
         return Objects.requireNonNull(supplier.get());
@@ -370,11 +370,11 @@ public class Optional<T> {
             return true;
         }
 
-        if (!(obj instanceof Optional)) {
+        if (!(obj instanceof CompatOptional)) {
             return false;
         }
 
-        Optional<?> other = (Optional<?>) obj;
+        CompatOptional<?> other = (CompatOptional<?>) obj;
         return Objects.equals(value, other.value);
     }
 
@@ -386,7 +386,7 @@ public class Optional<T> {
     @Override
     public String toString() {
         return value != null
-            ? String.format("Optional[%s]", value)
-            : "Optional.empty";
+            ? String.format("CompatOptional[%s]", value)
+            : "CompatOptional.empty";
     }
 }

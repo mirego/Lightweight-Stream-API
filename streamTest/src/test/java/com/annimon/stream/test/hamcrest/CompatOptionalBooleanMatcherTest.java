@@ -12,7 +12,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 
-public class OptionalBooleanMatcherTest {
+public class CompatOptionalBooleanMatcherTest {
 
     @Test
     public void testPrivateConstructor() throws Exception {

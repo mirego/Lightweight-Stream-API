@@ -1,7 +1,7 @@
 package com.annimon.stream.streamtests;
 
+import com.annimon.stream.CompatOptional;
 import com.annimon.stream.Functions;
-import com.annimon.stream.Optional;
 import com.annimon.stream.Stream;
 import org.junit.Test;
 import static com.annimon.stream.test.hamcrest.OptionalMatcher.hasValue;
@@ -17,7 +17,7 @@ public final class FindSingleTest {
 
     @Test
     public void testFindSingleOnOneElementStream() {
-        Optional<Integer> result = Stream.of(42).findSingle();
+        CompatOptional<Integer> result = Stream.of(42).findSingle();
 
         assertThat(result, hasValue(42));
     }
@@ -29,7 +29,7 @@ public final class FindSingleTest {
 
     @Test
     public void testFindSingleAfterFilteringToEmptyStream() {
-        Optional<Integer> result = Stream.range(1, 5)
+        CompatOptional<Integer> result = Stream.range(1, 5)
                 .filter(Functions.remainder(6))
                 .findSingle();
 
@@ -38,7 +38,7 @@ public final class FindSingleTest {
 
     @Test
     public void testFindSingleAfterFilteringToOneElementStream() {
-        Optional<Integer> result = Stream.range(1, 10)
+        CompatOptional<Integer> result = Stream.range(1, 10)
                 .filter(Functions.remainder(6))
                 .findSingle();
 

@@ -1,6 +1,6 @@
 package com.annimon.stream.streamtests;
 
-import com.annimon.stream.Optional;
+import com.annimon.stream.CompatOptional;
 import com.annimon.stream.Stream;
 import com.annimon.stream.function.BinaryOperator;
 import com.annimon.stream.function.Predicate;
@@ -43,7 +43,7 @@ public final class IterateTest {
 
     @Test(timeout=2000)
     public void testIterateIssue53() {
-        Optional<Integer> res = Stream
+        CompatOptional<Integer> res = Stream
                 .iterate(0, new UnaryOperator<Integer>() {
                     @Override
                     public Integer apply(Integer value) {

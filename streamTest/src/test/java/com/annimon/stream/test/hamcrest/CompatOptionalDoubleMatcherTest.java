@@ -14,7 +14,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 
-public class OptionalDoubleMatcherTest {
+public class CompatOptionalDoubleMatcherTest {
 
     @Test
     public void testPrivateConstructor() throws Exception {

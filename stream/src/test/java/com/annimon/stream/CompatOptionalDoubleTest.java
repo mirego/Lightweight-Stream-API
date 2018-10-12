@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
 /**
  * Tests for {@link OptionalDouble}
  */
-public class OptionalDoubleTest {
+public class CompatOptionalDoubleTest {
 
     @Test
     public void testGetWithPresentValue() {
@@ -278,7 +278,7 @@ public class OptionalDoubleTest {
             }
         };
 
-        Optional<String> result;
+        CompatOptional<String> result;
         result = OptionalDouble.empty().mapToObj(asciiToString);
         assertThat(result, OptionalMatcher.isEmpty());
 
@@ -437,7 +437,7 @@ public class OptionalDoubleTest {
     @Test
     public void testEquals() {
         assertEquals(OptionalDouble.empty(), OptionalDouble.empty());
-        assertNotEquals(OptionalDouble.empty(), Optional.empty());
+        assertNotEquals(OptionalDouble.empty(), CompatOptional.empty());
 
         assertEquals(OptionalDouble.of(Math.PI), OptionalDouble.of(Math.PI));
 

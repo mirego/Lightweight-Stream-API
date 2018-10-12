@@ -1,7 +1,7 @@
 package com.annimon.stream.streamtests;
 
+import com.annimon.stream.CompatOptional;
 import com.annimon.stream.Functions;
-import com.annimon.stream.Optional;
 import com.annimon.stream.Stream;
 import com.annimon.stream.test.hamcrest.OptionalMatcher;
 import org.junit.Test;
@@ -14,7 +14,7 @@ public final class FindLastTest {
 
     @Test
     public void testFindLast() {
-        Optional<Integer> result = Stream.rangeClosed(0, 10)
+        CompatOptional<Integer> result = Stream.rangeClosed(0, 10)
                 .findLast();
         assertThat(result, isPresent());
         assertNotNull(result.get());
@@ -28,7 +28,7 @@ public final class FindLastTest {
 
     @Test
     public void testFindLastAfterFiltering() {
-        Optional<Integer> result = Stream.range(1, 100)
+        CompatOptional<Integer> result = Stream.range(1, 100)
                 .filter(Functions.remainder(6))
                 .findLast();
 

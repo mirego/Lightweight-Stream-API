@@ -14,7 +14,7 @@ import java.util.NoSuchElementException;
  * A container object which may or may not contain a {@code long} value.
  *
  * @since 1.1.4
- * @see Optional
+ * @see CompatOptional
  */
 @SuppressWarnings("WeakerAccess")
 public final class OptionalLong {
@@ -212,17 +212,17 @@ public final class OptionalLong {
      *
      * @param <U> the type of result value
      * @param mapper  mapping function
-     * @return an {@code Optional} with transformed value if present,
-     *         otherwise an empty {@code Optional}
+     * @return an {@code CompatOptional} with transformed value if present,
+     *         otherwise an empty {@code CompatOptional}
      * @throws NullPointerException if value is present and
      *         {@code mapper} is {@code null}
      */
-    public <U> Optional<U> mapToObj(LongFunction<U> mapper) {
+    public <U> CompatOptional<U> mapToObj(LongFunction<U> mapper) {
         if (!isPresent()) {
-            return Optional.empty();
+            return CompatOptional.empty();
         }
         Objects.requireNonNull(mapper);
-        return Optional.ofNullable(mapper.apply(value));
+        return CompatOptional.ofNullable(mapper.apply(value));
     }
 
     /**

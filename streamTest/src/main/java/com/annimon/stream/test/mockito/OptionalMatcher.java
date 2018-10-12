@@ -1,6 +1,6 @@
 package com.annimon.stream.test.mockito;
 
-import com.annimon.stream.Optional;
+import com.annimon.stream.CompatOptional;
 import org.mockito.ArgumentMatcher;
 import static org.mockito.ArgumentMatchers.argThat;
 
@@ -8,26 +8,26 @@ public class OptionalMatcher {
 
     private OptionalMatcher() { }
 
-    public static <T> Optional<T> anyPresentOptional() {
+    public static <T> CompatOptional<T> anyPresentOptional() {
         return argThat(new PresentOptionalMatcher<T>());
     }
 
-    public static <T> Optional<T> anyPresentOptional(@SuppressWarnings("UnusedParameters") Class<T> clazz) {
+    public static <T> CompatOptional<T> anyPresentOptional(@SuppressWarnings("UnusedParameters") Class<T> clazz) {
         return argThat(new PresentOptionalMatcher<T>());
     }
 
-    public static <T> Optional<T> anyEmptyOptional() {
+    public static <T> CompatOptional<T> anyEmptyOptional() {
         return argThat(new EmptyOptionalMatcher<T>());
     }
 
-    public static <T> Optional<T> anyEmptyOptional(@SuppressWarnings("UnusedParameters") Class<T> clazz) {
+    public static <T> CompatOptional<T> anyEmptyOptional(@SuppressWarnings("UnusedParameters") Class<T> clazz) {
         return argThat(new EmptyOptionalMatcher<T>());
     }
 
-    public static class PresentOptionalMatcher<T> implements ArgumentMatcher<Optional<T>> {
+    public static class PresentOptionalMatcher<T> implements ArgumentMatcher<CompatOptional<T>> {
 
         @Override
-        public boolean matches(Optional<T> argument) {
+        public boolean matches(CompatOptional<T> argument) {
             return argument != null && argument.isPresent();
         }
 
@@ -37,10 +37,10 @@ public class OptionalMatcher {
         }
     }
 
-    public static class EmptyOptionalMatcher<T> implements ArgumentMatcher<Optional<T>> {
+    public static class EmptyOptionalMatcher<T> implements ArgumentMatcher<CompatOptional<T>> {
 
         @Override
-        public boolean matches(Optional<T> argument) {
+        public boolean matches(CompatOptional<T> argument) {
             return argument != null && argument.isEmpty();
         }
 
