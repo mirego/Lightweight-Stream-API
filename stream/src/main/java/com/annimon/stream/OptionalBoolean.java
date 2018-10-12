@@ -12,7 +12,7 @@ import java.util.NoSuchElementException;
  * A container object which may or may not contain a {@code boolean} value.
  *
  * @since 1.1.8
- * @see CompatOptional
+ * @see Optional
  */
 @SuppressWarnings("WeakerAccess")
 public final class OptionalBoolean {
@@ -212,17 +212,17 @@ public final class OptionalBoolean {
      *
      * @param <U> the type of result value
      * @param mapper  mapping function
-     * @return an {@code CompatOptional} with transformed value if present,
-     *         otherwise an empty {@code CompatOptional}
+     * @return an {@code Optional} with transformed value if present,
+     *         otherwise an empty {@code Optional}
      * @throws NullPointerException if value is present and
      *         {@code mapper} is {@code null}
      */
-    public <U> CompatOptional<U> mapToObj(BooleanFunction<U> mapper) {
+    public <U> Optional<U> mapToObj(BooleanFunction<U> mapper) {
         if (!isPresent()) {
-            return CompatOptional.empty();
+            return Optional.empty();
         }
         Objects.requireNonNull(mapper);
-        return CompatOptional.ofNullable(mapper.apply(value));
+        return Optional.ofNullable(mapper.apply(value));
     }
 
     /**

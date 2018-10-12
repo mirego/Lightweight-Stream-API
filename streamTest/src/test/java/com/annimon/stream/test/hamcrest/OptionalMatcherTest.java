@@ -1,6 +1,6 @@
 package com.annimon.stream.test.hamcrest;
 
-import com.annimon.stream.CompatOptional;
+import com.annimon.stream.Optional;
 
 import org.junit.Test;
 
@@ -15,7 +15,7 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.junit.Assert.assertThat;
 
-public class CompatOptionalMatcherTest {
+public class OptionalMatcherTest {
 
     @Test
     public void testPrivateConstructor() throws Exception {
@@ -24,42 +24,42 @@ public class CompatOptionalMatcherTest {
 
     @Test
     public void testIsPresent() {
-        CompatOptional<Integer> compatOptional = CompatOptional.of(5);
-        assertThat(compatOptional, isPresent());
-        assertThat(compatOptional, not(isEmpty()));
+        Optional<Integer> optional = Optional.of(5);
+        assertThat(optional, isPresent());
+        assertThat(optional, not(isEmpty()));
 
-        assertThat(isPresent(), description(is("CompatOptional value should be present")));
+        assertThat(isPresent(), description(is("Optional value should be present")));
     }
 
     @Test
     public void testIsEmpty() {
-        CompatOptional<Integer> compatOptional = CompatOptional.empty();
-        assertThat(compatOptional, isEmpty());
-        assertThat(compatOptional, not(isPresent()));
+        Optional<Integer> optional = Optional.empty();
+        assertThat(optional, isEmpty());
+        assertThat(optional, not(isPresent()));
 
-        assertThat(isEmpty(), description(is("CompatOptional value should be empty")));
+        assertThat(isEmpty(), description(is("Optional value should be empty")));
     }
 
     @Test
     public void testHasValue() {
-        CompatOptional<String> compatOptional = CompatOptional.of("text");
-        assertThat(compatOptional, hasValue("text"));
-        assertThat(compatOptional, not(hasValue("test")));
+        Optional<String> optional = Optional.of("text");
+        assertThat(optional, hasValue("text"));
+        assertThat(optional, not(hasValue("test")));
 
-        assertThat(hasValue(42), description(is("CompatOptional value is <42>")));
+        assertThat(hasValue(42), description(is("Optional value is <42>")));
     }
 
     @Test
     public void testHasValueThat() {
-        CompatOptional<String> compatOptional = CompatOptional.of("text");
-        assertThat(compatOptional, hasValueThat(startsWith("te")));
+        Optional<String> optional = Optional.of("text");
+        assertThat(optional, hasValueThat(startsWith("te")));
 
-        assertThat(hasValueThat(is(42)), description(is("CompatOptional value is <42>")));
+        assertThat(hasValueThat(is(42)), description(is("Optional value is <42>")));
     }
 
     @Test(expected = AssertionError.class)
     public void testHasValueOnEmptyOptional() {
-        assertThat(CompatOptional.<String>empty(), hasValue(""));
+        assertThat(Optional.<String>empty(), hasValue(""));
     }
 
     @Test(expected = AssertionError.class)

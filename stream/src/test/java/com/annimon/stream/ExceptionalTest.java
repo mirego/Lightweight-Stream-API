@@ -70,7 +70,7 @@ public class ExceptionalTest {
 
     @Test
     public void testGetOptional() {
-        CompatOptional<Integer> value = Exceptional
+        Optional<Integer> value = Exceptional
                 .of(ioExceptionSupplier)
                 .getOptional();
         assertFalse(value.isPresent());

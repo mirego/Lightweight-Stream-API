@@ -228,15 +228,15 @@ public final class OptionalInt {
      *
      * @param <U> the type of result value
      * @param mapper  mapping function
-     * @return an {@code CompatOptional} with transformed value if present,
-     *         otherwise an empty {@code CompatOptional}
+     * @return an {@code Optional} with transformed value if present,
+     *         otherwise an empty {@code Optional}
      * @throws NullPointerException if value is present and
      *         {@code mapper} is {@code null}
      * @since 1.1.3
      */
-    public <U> CompatOptional<U> mapToObj(IntFunction<U> mapper) {
-        if (!isPresent()) return CompatOptional.empty();
-        return CompatOptional.ofNullable(mapper.apply(value));
+    public <U> Optional<U> mapToObj(IntFunction<U> mapper) {
+        if (!isPresent()) return Optional.empty();
+        return Optional.ofNullable(mapper.apply(value));
     }
 
     /**

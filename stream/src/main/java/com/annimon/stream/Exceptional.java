@@ -105,12 +105,12 @@ public class Exceptional<T> {
     }
 
     /**
-     * Wraps inner value with {@code CompatOptional} container
+     * Wraps inner value with {@code Optional} container
      *
-     * @return an {@code CompatOptional}
+     * @return an {@code Optional}
      */
-    public CompatOptional<T> getOptional() {
-        return CompatOptional.ofNullable(value);
+    public Optional<T> getOptional() {
+        return Optional.ofNullable(value);
     }
 
     /**

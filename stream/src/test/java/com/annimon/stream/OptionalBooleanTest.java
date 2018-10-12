@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
 /**
  * Tests for {@link OptionalBoolean}
  */
-public class CompatOptionalBooleanTest {
+public class OptionalBooleanTest {
 
     @Test
     public void testGetWithPresentValue() {
@@ -285,7 +285,7 @@ public class CompatOptionalBooleanTest {
             }
         };
 
-        CompatOptional<String> result;
+        Optional<String> result;
         result = OptionalBoolean.empty().mapToObj(toString);
         assertThat(result, OptionalMatcher.isEmpty());
 
@@ -399,7 +399,7 @@ public class CompatOptionalBooleanTest {
     @Test
     public void testEquals() {
         assertEquals(OptionalBoolean.empty(), OptionalBoolean.empty());
-        assertNotEquals(OptionalBoolean.empty(), CompatOptional.empty());
+        assertNotEquals(OptionalBoolean.empty(), Optional.empty());
 
         assertEquals(OptionalBoolean.of(true), OptionalBoolean.of(true));
 

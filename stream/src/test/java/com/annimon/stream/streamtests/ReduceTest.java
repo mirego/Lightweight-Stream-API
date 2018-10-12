@@ -1,7 +1,7 @@
 package com.annimon.stream.streamtests;
 
 import com.annimon.stream.Functions;
-import com.annimon.stream.CompatOptional;
+import com.annimon.stream.Optional;
 import com.annimon.stream.Stream;
 import com.annimon.stream.function.BiFunction;
 import org.junit.Test;
@@ -41,7 +41,7 @@ public final class ReduceTest {
 
     @Test
     public void testReduceOptional() {
-        CompatOptional<Integer> result = Stream.range(0, 10)
+        Optional<Integer> result = Stream.range(0, 10)
                 .reduce(Functions.addition());
 
         assertThat(result, isPresent());
@@ -51,7 +51,7 @@ public final class ReduceTest {
     
     @Test
     public void testReduceOptionalOnEmptyStream() {
-        CompatOptional<Integer> result = Stream.<Integer>empty()
+        Optional<Integer> result = Stream.<Integer>empty()
                 .reduce(Functions.addition());
 
         assertThat(result, isEmpty());

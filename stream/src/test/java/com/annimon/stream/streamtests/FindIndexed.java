@@ -1,7 +1,7 @@
 package com.annimon.stream.streamtests;
 
 import com.annimon.stream.IntPair;
-import com.annimon.stream.CompatOptional;
+import com.annimon.stream.Optional;
 import com.annimon.stream.Stream;
 import com.annimon.stream.function.IndexedPredicate;
 import org.junit.Test;
@@ -31,7 +31,7 @@ public final class FindIndexed {
 
     @Test
     public void testFindIndexedNoMatch() {
-        CompatOptional<IntPair<Integer>> result = Stream.range(0, 10)
+        Optional<IntPair<Integer>> result = Stream.range(0, 10)
                 .findIndexed(sumEquals(42));
         assertThat(result, isEmpty());
     }

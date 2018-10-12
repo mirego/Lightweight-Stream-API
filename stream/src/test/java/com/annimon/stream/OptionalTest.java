@@ -24,11 +24,11 @@ import static org.hamcrest.Matchers.closeTo;
 import static org.junit.Assert.*;
 
 /**
- * Tests {@code CompatOptional}.
+ * Tests {@code Optional}.
  *
- * @see CompatOptional
+ * @see com.annimon.stream.Optional
  */
-public final class CompatOptionalTest {
+public final class OptionalTest {
 
     private static Student student;
 
@@ -39,33 +39,33 @@ public final class CompatOptionalTest {
 
     @Test
     public void testGetWithPresentValue() {
-        int value = CompatOptional.of(10).get();
+        int value = Optional.of(10).get();
         assertEquals(10, value);
     }
 
     @Test
     public void testGetWithObject() {
-        assertEquals("Lena", CompatOptional.of(student).get().getName());
+        assertEquals("Lena", Optional.of(student).get().getName());
     }
 
     @Test(expected = NoSuchElementException.class)
     public void testGetOnEmptyOptional() {
-        CompatOptional.empty().get();
+        Optional.empty().get();
     }
 
     @Test
     public void testIsPresent() {
-        assertThat(CompatOptional.of(10), isPresent());
+        assertThat(Optional.of(10), isPresent());
     }
 
     @Test
     public void testIsPresentOnEmptyOptional() {
-        assertThat(CompatOptional.ofNullable(null), isEmpty());
+        assertThat(Optional.ofNullable(null), isEmpty());
     }
 
     @Test
     public void testIfPresent() {
-        CompatOptional.of(10).ifPresent(new Consumer<Integer>() {
+        Optional.of(10).ifPresent(new Consumer<Integer>() {
             @Override
             public void accept(Integer value) {
                 assertEquals(10, (int) value);
@@ -75,7 +75,7 @@ public final class CompatOptionalTest {
 
     @Test
     public void testIfPresentOrElseWhenValuePresent() {
-        CompatOptional.of(10).ifPresentOrElse(new Consumer<Integer>() {
+        Optional.of(10).ifPresentOrElse(new Consumer<Integer>() {
             @Override
             public void accept(Integer value) {
                 assertEquals(10, (int) value);
@@ -90,7 +90,7 @@ public final class CompatOptionalTest {
 
     @Test(expected = RuntimeException.class)
     public void testIfPresentOrElseWhenValueAbsent() {
-        CompatOptional.<Integer>empty().ifPresentOrElse(new Consumer<Integer>() {
+        Optional.<Integer>empty().ifPresentOrElse(new Consumer<Integer>() {
             @Override
             public void accept(Integer value) {
                 fail();
@@ -105,7 +105,7 @@ public final class CompatOptionalTest {
 
     @Test
     public void testIfPresentOrElseWhenValuePresentAndEmptyActionNull() {
-        CompatOptional.of(10).ifPresentOrElse(new Consumer<Integer>() {
+        Optional.of(10).ifPresentOrElse(new Consumer<Integer>() {
             @Override
             public void accept(Integer value) {
                 assertEquals(10, (int) value);
@@ -115,7 +115,7 @@ public final class CompatOptionalTest {
 
     @Test(expected = RuntimeException.class)
     public void testIfPresentOrElseWhenValueAbsentAndConsumerNull() {
-        CompatOptional.<Integer>empty().ifPresentOrElse(null, new Runnable() {
+        Optional.<Integer>empty().ifPresentOrElse(null, new Runnable() {
             @Override
             public void run() {
                 throw new RuntimeException();
@@ -125,7 +125,7 @@ public final class CompatOptionalTest {
 
     @Test(expected = NullPointerException.class)
     public void testIfPresentOrElseWhenValuePresentAndConsumerNull() {
-        CompatOptional.of(10).ifPresentOrElse(null, new Runnable() {
+        Optional.of(10).ifPresentOrElse(null, new Runnable() {
             @Override
             public void run() {
                 fail("Should not have been executed.");
@@ -135,7 +135,7 @@ public final class CompatOptionalTest {
 
     @Test(expected = NullPointerException.class)
     public void testIfPresentOrElseWhenValueAbsentAndEmptyActionNull() {
-        CompatOptional.<Integer>empty().ifPresentOrElse(new Consumer<Integer>() {
+        Optional.<Integer>empty().ifPresentOrElse(new Consumer<Integer>() {
             @Override
             public void accept(Integer value) {
                 fail("Should not have been executed.");
@@ -145,7 +145,7 @@ public final class CompatOptionalTest {
 
     @Test
     public void testExecuteIfPresent() {
-        int value = CompatOptional.of(10)
+        int value = Optional.of(10)
                 .executeIfPresent(new Consumer<Integer>() {
                     @Override
                     public void accept(Integer value) {
@@ -158,7 +158,7 @@ public final class CompatOptionalTest {
 
     @Test
     public void testExecuteIfPresentOnAbsentValue() {
-        CompatOptional.<Integer>empty()
+        Optional.<Integer>empty()
                 .executeIfPresent(new Consumer<Integer>() {
                     @Override
                     public void accept(Integer value) {
@@ -169,7 +169,7 @@ public final class CompatOptionalTest {
 
     @Test(expected = RuntimeException.class)
     public void testExecuteIfAbsent() {
-        CompatOptional.empty()
+        Optional.empty()
                 .executeIfAbsent(new Runnable() {
                     @Override
                     public void run() {
@@ -180,7 +180,7 @@ public final class CompatOptionalTest {
 
     @Test
     public void testExecuteIfAbsentOnPresentValue() {
-        CompatOptional.of(10)
+        Optional.of(10)
                 .executeIfAbsent(new Runnable() {
                     @Override
                     public void run() {
@@ -191,10 +191,10 @@ public final class CompatOptionalTest {
 
     @Test
     public void testCustomIntermediate() {
-        CompatOptional<Integer> result = CompatOptional.of(10)
-                .custom(new Function<CompatOptional<Integer>, CompatOptional<Integer>>() {
+        Optional<Integer> result = Optional.of(10)
+                .custom(new Function<Optional<Integer>, Optional<Integer>>() {
                     @Override
-                    public CompatOptional<Integer> apply(CompatOptional<Integer> optional) {
+                    public Optional<Integer> apply(Optional<Integer> optional) {
                         return optional.filter(Functions.remainder(2));
                     }
                 });
@@ -204,10 +204,10 @@ public final class CompatOptionalTest {
 
     @Test
     public void testCustomTerminal() {
-        Integer result = CompatOptional.<Integer>empty()
-                .custom(new Function<CompatOptional<Integer>, Integer>() {
+        Integer result = Optional.<Integer>empty()
+                .custom(new Function<Optional<Integer>, Integer>() {
                     @Override
-                    public Integer apply(CompatOptional<Integer> optional) {
+                    public Integer apply(Optional<Integer> optional) {
                         return optional.orElse(0);
                     }
                 });
@@ -217,12 +217,12 @@ public final class CompatOptionalTest {
 
     @Test(expected = NullPointerException.class)
     public void testCustomException() {
-        CompatOptional.<Integer>empty().custom(null);
+        Optional.<Integer>empty().custom(null);
     }
 
     @Test
     public void testFilter() {
-        CompatOptional<Integer> result = CompatOptional.of(10)
+        Optional<Integer> result = Optional.of(10)
                 .filter(Predicate.Util.negate(Functions.remainder(2)));
 
         assertThat(result, isEmpty());
@@ -230,7 +230,7 @@ public final class CompatOptionalTest {
 
     @Test
     public void testFilterNot() {
-        CompatOptional<Integer> result = CompatOptional.of(10)
+        Optional<Integer> result = Optional.of(10)
                 .filterNot(Functions.remainder(2));
 
         assertThat(result, isEmpty());
@@ -239,14 +239,14 @@ public final class CompatOptionalTest {
     @Test
     public void testMapOnEmptyOptional() {
         assertFalse(
-                CompatOptional.<Integer>empty()
+                Optional.<Integer>empty()
                         .map(UnaryOperator.Util.<Integer>identity())
                         .isPresent());
     }
 
     @Test
     public void testMapAsciiToString() {
-        CompatOptional<String> result = CompatOptional.of(65)
+        Optional<String> result = Optional.of(65)
                 .map(new Function<Integer, String>() {
                     @Override
                     public String apply(Integer value) {
@@ -268,11 +268,11 @@ public final class CompatOptionalTest {
         };
 
         OptionalInt result;
-        result = CompatOptional.<String>empty()
+        result = Optional.<String>empty()
                 .mapToInt(firstCharToIntFunction);
         assertThat(result, OptionalIntMatcher.isEmpty());
 
-        result = CompatOptional.of("A")
+        result = Optional.of("A")
                 .mapToInt(firstCharToIntFunction);
         assertThat(result, OptionalIntMatcher.hasValue(65));
     }
@@ -287,10 +287,10 @@ public final class CompatOptionalTest {
         };
 
         OptionalLong result;
-        result = CompatOptional.<String>empty().mapToLong(mapper);
+        result = Optional.<String>empty().mapToLong(mapper);
         assertThat(result, OptionalLongMatcher.isEmpty());
 
-        result = CompatOptional.of("65").mapToLong(mapper);
+        result = Optional.of("65").mapToLong(mapper);
         assertThat(result, OptionalLongMatcher.hasValue(650000000000L));
     }
 
@@ -304,10 +304,10 @@ public final class CompatOptionalTest {
         };
 
         OptionalDouble result;
-        result = CompatOptional.<String>empty().mapToDouble(mapper);
+        result = Optional.<String>empty().mapToDouble(mapper);
         assertThat(result, OptionalDoubleMatcher.isEmpty());
 
-        result = CompatOptional.of("65").mapToDouble(mapper);
+        result = Optional.of("65").mapToDouble(mapper);
         assertThat(result, OptionalDoubleMatcher.hasValueThat(closeTo(0.65, 0.0001)));
     }
 
@@ -321,20 +321,20 @@ public final class CompatOptionalTest {
         };
 
         OptionalBoolean result;
-        result = CompatOptional.<String>empty().mapToBoolean(mapper);
+        result = Optional.<String>empty().mapToBoolean(mapper);
         assertThat(result, OptionalBooleanMatcher.isEmpty());
 
-        result = CompatOptional.of("true").mapToBoolean(mapper);
+        result = Optional.of("true").mapToBoolean(mapper);
         assertThat(result, OptionalBooleanMatcher.hasValueThat(is(true)));
     }
 
     @Test
     public void testFlatMapAsciiToString() {
-        CompatOptional<String> result = CompatOptional.of(65)
-                .flatMap(new Function<Integer, CompatOptional<String>>() {
+        Optional<String> result = Optional.of(65)
+                .flatMap(new Function<Integer, Optional<String>>() {
                     @Override
-                    public CompatOptional<String> apply(Integer value) {
-                        return CompatOptional.ofNullable(String.valueOf((char) value.intValue()));
+                    public Optional<String> apply(Integer value) {
+                        return Optional.ofNullable(String.valueOf((char) value.intValue()));
                     }
                 });
 
@@ -343,11 +343,11 @@ public final class CompatOptionalTest {
 
     @Test
     public void testFlatMapOnEmptyOptional() {
-        CompatOptional<String> result = CompatOptional.<Integer>ofNullable(null)
-                .flatMap(new Function<Integer, CompatOptional<String>>() {
+        Optional<String> result = Optional.<Integer>ofNullable(null)
+                .flatMap(new Function<Integer, Optional<String>>() {
                     @Override
-                    public CompatOptional<String> apply(Integer value) {
-                        return CompatOptional.ofNullable(String.valueOf((char) value.intValue()));
+                    public Optional<String> apply(Integer value) {
+                        return Optional.ofNullable(String.valueOf((char) value.intValue()));
                     }
                 });
 
@@ -356,10 +356,10 @@ public final class CompatOptionalTest {
 
     @Test(expected = NullPointerException.class)
     public void testFlatMapWithNullResultFunction() {
-        CompatOptional.of(10)
-                .flatMap(new Function<Integer, CompatOptional<String>>() {
+        Optional.of(10)
+                .flatMap(new Function<Integer, Optional<String>>() {
                     @Override
-                    public CompatOptional<String> apply(Integer value) {
+                    public Optional<String> apply(Integer value) {
                         return null;
                     }
                 });
@@ -367,19 +367,19 @@ public final class CompatOptionalTest {
 
     @Test
     public void testStream() {
-        long count = CompatOptional.of(10).stream().count();
+        long count = Optional.of(10).stream().count();
         assertThat(count, is(1L));
     }
 
     @Test
     public void testStreamOnEmptyOptional() {
-        long count = CompatOptional.empty().stream().count();
+        long count = Optional.empty().stream().count();
         assertThat(count, is(0L));
     }
 
     @Test
     public void testSelectOnEmptyOptional() {
-        CompatOptional<Integer> result = CompatOptional.empty()
+        Optional<Integer> result = Optional.empty()
                 .select(Integer.class);
 
         assertThat(result, isEmpty());
@@ -389,7 +389,7 @@ public final class CompatOptionalTest {
     public void testSelectValidSubclassOnOptional() {
         Number number = 42;
 
-        CompatOptional<Integer> result = CompatOptional.of(number)
+        Optional<Integer> result = Optional.of(number)
                 .select(Integer.class);
 
         assertThat(result, isPresent());
@@ -400,7 +400,7 @@ public final class CompatOptionalTest {
     public void testSelectInvalidSubclassOnOptional() {
         Number number = 42;
 
-        CompatOptional<String> result = CompatOptional.of(number)
+        Optional<String> result = Optional.of(number)
                 .select(String.class);
 
         assertThat(result, isEmpty());
@@ -408,20 +408,20 @@ public final class CompatOptionalTest {
 
     @Test(expected = NullPointerException.class)
     public void testSelectWithNullClassOnPresentOptional() {
-        CompatOptional.of(42).select(null);
+        Optional.of(42).select(null);
     }
 
     @Test(expected = NullPointerException.class)
     public void testSelectWithNullClassOnEmptyOptional() {
-        CompatOptional.empty().select(null);
+        Optional.empty().select(null);
     }
 
     @Test
     public void testOr() {
-        int value = CompatOptional.of(42).or(new Supplier<CompatOptional<Integer>>() {
+        int value = Optional.of(42).or(new Supplier<Optional<Integer>>() {
             @Override
-            public CompatOptional<Integer> get() {
-                return CompatOptional.of(19);
+            public Optional<Integer> get() {
+                return Optional.of(19);
             }
         }).get();
         assertEquals(42, value);
@@ -429,10 +429,10 @@ public final class CompatOptionalTest {
 
     @Test
     public void testOrOnEmptyOptional() {
-        int value = CompatOptional.<Integer>empty().or(new Supplier<CompatOptional<Integer>>() {
+        int value = Optional.<Integer>empty().or(new Supplier<Optional<Integer>>() {
             @Override
-            public CompatOptional<Integer> get() {
-                return CompatOptional.of(19);
+            public Optional<Integer> get() {
+                return Optional.of(19);
             }
         }).get();
         assertEquals(19, value);
@@ -440,29 +440,29 @@ public final class CompatOptionalTest {
 
     @Test
     public void testOrOnEmptyOptionalAndEmptySupplierOptional() {
-        final CompatOptional<Integer> compatOptional = CompatOptional.<Integer>empty().or(new Supplier<CompatOptional<Integer>>() {
+        final Optional<Integer> optional = Optional.<Integer>empty().or(new Supplier<Optional<Integer>>() {
             @Override
-            public CompatOptional<Integer> get() {
-                return CompatOptional.empty();
+            public Optional<Integer> get() {
+                return Optional.empty();
             }
         });
-        assertThat(compatOptional, isEmpty());
+        assertThat(optional, isEmpty());
     }
 
     @Test
     public void testOrElseWithPresentValue() {
-        int value = CompatOptional.<Integer>empty().orElse(42);
+        int value = Optional.<Integer>empty().orElse(42);
         assertEquals(42, value);
     }
 
     @Test
     public void testOrElseOnEmptyOptional() {
-        assertEquals("Lena", CompatOptional.<Student>empty().orElse(student).getName());
+        assertEquals("Lena", Optional.<Student>empty().orElse(student).getName());
     }
 
     @Test
     public void testOrElseGet() {
-        int value = CompatOptional.<Integer>empty().orElseGet(new Supplier<Integer>() {
+        int value = Optional.<Integer>empty().orElseGet(new Supplier<Integer>() {
             @Override
             public Integer get() {
                 return 42;
@@ -473,23 +473,23 @@ public final class CompatOptionalTest {
 
     @Test
     public void testOrElseThrowWithPresentValue() {
-        int value = CompatOptional.of(10).orElseThrow();
+        int value = Optional.of(10).orElseThrow();
         assertEquals(10, value);
     }
 
     @Test
     public void testOrElseThrowWithObject() {
-        assertEquals("Lena", CompatOptional.of(student).orElseThrow().getName());
+        assertEquals("Lena", Optional.of(student).orElseThrow().getName());
     }
 
     @Test(expected = NoSuchElementException.class)
     public void testOrElseThrowOnEmptyOptional() {
-        CompatOptional.empty().orElseThrow();
+        Optional.empty().orElseThrow();
     }
 
     @Test(expected = ArithmeticException.class)
     public void testOrElseThrow() {
-        CompatOptional.empty().orElseThrow(new Supplier<RuntimeException>() {
+        Optional.empty().orElseThrow(new Supplier<RuntimeException>() {
 
             @Override
             public RuntimeException get() {
@@ -500,14 +500,14 @@ public final class CompatOptionalTest {
 
     @Test
     public void testEqualsReflexive() {
-        final CompatOptional<Student> s1 = CompatOptional.of(student);
+        final Optional<Student> s1 = Optional.of(student);
         assertEquals(s1, s1);
     }
 
     @Test
     public void testEqualsSymmetric() {
-        final CompatOptional<Student> s1 = CompatOptional.of(student);
-        final CompatOptional<Student> s2 = CompatOptional.of(student);
+        final Optional<Student> s1 = Optional.of(student);
+        final Optional<Student> s2 = Optional.of(student);
 
         assertEquals(s1, s2);
         assertEquals(s2, s1);
@@ -515,9 +515,9 @@ public final class CompatOptionalTest {
 
     @Test
     public void testEqualsTransitive() {
-        final CompatOptional<Student> s1 = CompatOptional.of(student);
-        final CompatOptional<Student> s2 = CompatOptional.of(student);
-        final CompatOptional<Student> s3 = CompatOptional.of(student);
+        final Optional<Student> s1 = Optional.of(student);
+        final Optional<Student> s2 = Optional.of(student);
+        final Optional<Student> s3 = Optional.of(student);
 
         assertEquals(s1, s2);
         assertEquals(s2, s3);
@@ -526,38 +526,38 @@ public final class CompatOptionalTest {
 
     @Test
     public void testEqualsWithDifferentTypes() {
-        final CompatOptional<Integer> optInt = CompatOptional.of(10);
+        final Optional<Integer> optInt = Optional.of(10);
         assertFalse(optInt.equals(10));
     }
 
     @Test
     public void testEqualsWithDifferentGenericTypes() {
-        final CompatOptional<Student> s1 = CompatOptional.of(student);
-        final CompatOptional<Integer> optInt = CompatOptional.of(10);
+        final Optional<Student> s1 = Optional.of(student);
+        final Optional<Integer> optInt = Optional.of(10);
 
         assertNotEquals(s1, optInt);
     }
 
     @Test
     public void testEqualsWithDifferentNullableState() {
-        final CompatOptional<Integer> optInt = CompatOptional.of(10);
-        final CompatOptional<Integer> optIntNullable = CompatOptional.ofNullable(10);
+        final Optional<Integer> optInt = Optional.of(10);
+        final Optional<Integer> optIntNullable = Optional.ofNullable(10);
 
         assertEquals(optInt, optIntNullable);
     }
 
     @Test
     public void testEqualsWithTwoEmptyOptional() {
-        final CompatOptional<Integer> empty1 = CompatOptional.ofNullable(null);
-        final CompatOptional<Integer> empty2 = CompatOptional.empty();
+        final Optional<Integer> empty1 = Optional.ofNullable(null);
+        final Optional<Integer> empty2 = Optional.empty();
 
         assertEquals(empty1, empty2);
     }
 
     @Test
     public void testHashCodeWithSameObject() {
-        final CompatOptional<Student> s1 = CompatOptional.of(student);
-        final CompatOptional<Student> s2 = CompatOptional.of(student);
+        final Optional<Student> s1 = Optional.of(student);
+        final Optional<Student> s2 = Optional.of(student);
 
         int initial = s1.hashCode();
         assertEquals(initial, s1.hashCode());
@@ -567,35 +567,35 @@ public final class CompatOptionalTest {
 
     @Test
     public void testHashCodeWithDifferentGenericType() {
-        final CompatOptional<Student> s1 = CompatOptional.of(student);
-        final CompatOptional<Integer> optInt = CompatOptional.of(10);
+        final Optional<Student> s1 = Optional.of(student);
+        final Optional<Integer> optInt = Optional.of(10);
 
         assertNotEquals(s1.hashCode(), optInt.hashCode());
     }
 
     @Test
     public void testHashCodeWithDifferentNullableState() {
-        final CompatOptional<Integer> optInt = CompatOptional.of(10);
-        final CompatOptional<Integer> optIntNullable = CompatOptional.ofNullable(10);
+        final Optional<Integer> optInt = Optional.of(10);
+        final Optional<Integer> optIntNullable = Optional.ofNullable(10);
 
         assertEquals(optInt.hashCode(), optIntNullable.hashCode());
     }
 
     @Test
     public void testHashCodeWithTwoEmptyOptional() {
-        final CompatOptional<Integer> empty1 = CompatOptional.ofNullable(null);
-        final CompatOptional<Integer> empty2 = CompatOptional.empty();
+        final Optional<Integer> empty1 = Optional.ofNullable(null);
+        final Optional<Integer> empty2 = Optional.empty();
 
         assertEquals(empty1.hashCode(), empty2.hashCode());
     }
 
     @Test
     public void testToStringOnEmptyOptional() {
-        assertEquals("CompatOptional.empty", CompatOptional.empty().toString());
+        assertEquals("Optional.empty", Optional.empty().toString());
     }
 
     @Test
     public void testToStringWithPresentValue() {
-        assertEquals("CompatOptional[10]", CompatOptional.of(10).toString());
+        assertEquals("Optional[10]", Optional.of(10).toString());
     }
 }
