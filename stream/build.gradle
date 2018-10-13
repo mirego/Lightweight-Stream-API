@@ -55,6 +55,8 @@ j2objc {
     ]
     incremental = false
     lintAllowWarnings = true
+
+    options += ' --header-mapping header-mapping.j2objc'
 }
 
 tasks['j2objc'].doLast {
