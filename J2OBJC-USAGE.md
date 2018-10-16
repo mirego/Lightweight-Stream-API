@@ -24,7 +24,7 @@ s.dependency 'lightweight-stream-api', '1.2.10'
 
 Certains fichiers `.h` générés pour `stream-api` entrent en conflit avec des header de `jre-emul`
 
-###Si le votre projet a déjà du header mapping: 
+### Si le votre projet a déjà du header mapping: 
 
 - Ajouter les entrées suivante au fichier de header mapping (normalement nommé `header-mapping.j2objc') dans le Core du project
 
@@ -36,7 +36,7 @@ com.annimon.stream.function.Predicate=CASPredicate.h
 com.annimon.stream.function.Supplier=CASSupplier.h
 ```
 
-###Si votre projet n'a pas de header mapping:
+### Si votre projet n'a pas de header mapping:
 
 - Créer un fichier texte appelé `header-mapping.j2objc` à la racine du core avec les entrées suivante:
 
