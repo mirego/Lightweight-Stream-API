@@ -12,6 +12,7 @@ import java.io.Closeable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +46,7 @@ public class Stream<T> implements Closeable {
      */
     public static <K, V> Stream<Map.Entry<K, V>> of(Map<K, V> map) {
         Objects.requireNonNull(map);
-        return new Stream<Map.Entry<K, V>>(map.entrySet());
+        return new Stream<Map.Entry<K, V>>(new HashSet<>(map.entrySet()));
     }
 
     /**
@@ -1027,7 +1028,7 @@ public class Stream<T> implements Closeable {
      */
     public <K> Stream<Map.Entry<K, List<T>>> groupBy(final Function<? super T, ? extends K> classifier) {
         Map<K, List<T>> map = collect(Collectors.<T, K>groupingBy(classifier));
-        return new Stream<Map.Entry<K, List<T>>>(params, map.entrySet());
+        return new Stream<Map.Entry<K, List<T>>>(params, new HashSet<>(map.entrySet()));
     }
 
     /**
