@@ -5,16 +5,20 @@ Pod::Spec.new do |s|
   s.summary  = 'Stream api port to Java 7.'
   s.homepage = 'http://www.mirego.com'
   s.authors  = { 'Mirego, Inc.' => 'info@mirego.com' }
-  s.source   = { :http => "${sourceUrl}",
-                 :sha1 => '${sourceSha1}' }
-  s.requires_arc = true
+  s.source   = { :git => 'git@github.com:mirego/Lightweight-Stream-API.git', :tag => 'lightweight-stream-' + s.version.to_s }
+  s.requires_arc = false
 
-  s.ios.deployment_target = '7.0'
-  s.osx.deployment_target = '10.11'
+  s.prepare_command = <<-CMD
+    export ANDROID_HOME="\${ANDROID_HOME:-\$HOME/Library/Android/sdk}"
+    ./gradlew j2objc
+  CMD
+
+  s.ios.deployment_target = '8.0'
+  s.osx.deployment_target = '10.6'
   s.watchos.deployment_target = '2.0'
   s.tvos.deployment_target = '9.0'
-  s.compiler_flags = '-fobjc-arc-exceptions'
 
   s.source_files = 'stream-j2objc/**/*.{h,m}'
-  s.dependency 'J2ObjC@mirego', '1.0.0.2'
+  
+  s.dependency 'J2ObjC@mirego', '>= ${project.j2objc.version}'
 end

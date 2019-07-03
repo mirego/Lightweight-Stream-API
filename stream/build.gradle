@@ -2,8 +2,8 @@ plugins {
     id 'java-library'
     id 'me.champeau.gradle.jmh'
     id 'mirego.publish' version '1.0'
-    id 'mirego.release' version '1.10'
-    id 'mirego.j2objc' version '1.49'
+    id 'mirego.release' version '1.13'
+    id 'mirego.j2objc' version '1.59'
 }
 
 archivesBaseName = 'stream'
@@ -11,6 +11,7 @@ group = 'com.mirego.annimon'
 
 sourceCompatibility = '1.7'
 targetCompatibility = '1.7'
+
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 if (!hasProperty('mainClass')) {
@@ -50,31 +51,23 @@ j2objc {
     version = '1.0.0.2'
 
     podName = 'lightweight-stream-api'
+
     prefixes = [
             'com.annimon.stream.*': 'CAS'
     ]
-    incremental = false
-    lintAllowWarnings = true
 
-    options += ' --header-mapping header-mapping.j2objc'
+    options = '-encoding UTF-8 -Werror --build-closure --doc-comments --generate-deprecated -J-Xmx2G --no-package-directories --nullability --swift-friendly --header-mapping header-mapping.j2objc'
 }
 
 tasks['j2objc'].doLast {
     // Some hacking:
-    // The following files generate header file names that clash with jre-emul after transpilling:
-    // Optional.java
-    // Function.java
-    // Objects.java
-    // Predicate.java
-    // Supplier.java
-    //
-    // Renaming header and source files to CAS*.h and CAS*.m and the --header-mapping replace the #include references.
-
-    renameHeader('Optional', 'CAS')
-    renameHeader('Function', 'CAS')
-    renameHeader('Objects', 'CAS')
-    renameHeader('Predicate', 'CAS')
-    renameHeader('Supplier', 'CAS')
+    // The following files generate header file names that clash with jre-emul after transpilling
+    // Renaming header and source files to CAS*.h and CAS*.m and the --header-mapping replace the #include references
+    renameHeader('Optional', 'CAS') // Optional.java
+    renameHeader('Function', 'CAS') // Function.java
+    renameHeader('Objects', 'CAS') // Objects.java
+    renameHeader('Predicate', 'CAS') // Predicate.java
+    renameHeader('Supplier', 'CAS') // Supplier.java
 }
 
 def renameHeader(fileName, prefix) {
