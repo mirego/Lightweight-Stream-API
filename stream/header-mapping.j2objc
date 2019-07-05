@@ -1,5 +1,0 @@
-com.annimon.stream.Optional=CASOptional.h
-com.annimon.stream.function.Function=CASFunction.h
-com.annimon.stream.Objects=CASObjects.h
-com.annimon.stream.function.Predicate=CASPredicate.h
-com.annimon.stream.function.Supplier=CASSupplier.h

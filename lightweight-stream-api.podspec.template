@@ -19,6 +19,7 @@ Pod::Spec.new do |s|
   s.tvos.deployment_target = '9.0'
 
   s.source_files = 'stream-j2objc/**/*.{h,m}'
+  s.header_mappings_dir = 'stream-j2objc'
   
   s.dependency 'J2ObjC@mirego', '>= ${project.j2objc.version}'
 end
