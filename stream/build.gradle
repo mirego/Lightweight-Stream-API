@@ -51,6 +51,10 @@ j2objc {
     version = '1.0.0.2'
 
     podName = 'lightweight-stream-api'
+    podspecFile = "../${j2objc.podName}.podspec"
+
+    generatedDir = "../${project.name}-j2objc"
+    generatedTargetDir = "${project.name}-j2objc"
 
     prefixes = [
             'com.annimon.stream.*': 'CAS'

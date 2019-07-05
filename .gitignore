@@ -8,7 +8,6 @@
 /stream/target/
 /stream/build/
 /stream/out/
-/stream/stream-j2objc/
 /streamTest/target/
 /streamTest/build/
 /streamTest/out/
@@ -16,3 +15,5 @@
 *.iml
 local.properties
 
+stream-j2objc
+lightweight-stream-api.podspec
