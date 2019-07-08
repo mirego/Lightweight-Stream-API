@@ -60,7 +60,26 @@ j2objc {
             'com.annimon.stream.*': 'CAS'
     ]
 
-    options = '-encoding UTF-8 -Werror --build-closure --doc-comments --generate-deprecated -J-Xmx2G --nullability --swift-friendly'
+    options = '-encoding UTF-8 -Werror --build-closure --doc-comments --generate-deprecated -J-Xmx2G --no-package-directories --nullability --swift-friendly --header-mapping header-mapping.j2objc'
+}
+
+tasks['j2objc'].doLast {
+    // Some hacking:
+    // The following files generate header file names that clash with jre-emul after transpilling
+    // Renaming header and source files to CAS*.h and CAS*.m and the --header-mapping replace the #include references
+    renameHeader('Optional', 'CAS') // Optional.java
+    renameHeader('Function', 'CAS') // Function.java
+    renameHeader('Objects', 'CAS') // Objects.java
+    renameHeader('Predicate', 'CAS') // Predicate.java
+    renameHeader('Supplier', 'CAS') // Supplier.java
+}
+
+def renameHeader(fileName, prefix) {
+    def genDir = file(project.extensions['j2objc'].generatedDir)
+    new File(genDir, fileName +'.h').renameTo(new File(genDir, prefix + fileName + '.h'))
+    def mFile = new File(genDir, fileName + '.m')
+    mFile.text = mFile.text.replaceAll('#include "' + fileName + '.h"', '#include "' + prefix + fileName + '.h"')
+    mFile.renameTo(new File(genDir, prefix + fileName+ '.m'))
 }
 
 release {
