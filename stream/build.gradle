@@ -72,6 +72,7 @@ tasks['j2objc'].doLast {
     renameHeader('Objects', 'CAS') // Objects.java
     renameHeader('Predicate', 'CAS') // Predicate.java
     renameHeader('Supplier', 'CAS') // Supplier.java
+    renameHeader('Stream', 'CAS') // Stream.java
 }
 
 def renameHeader(fileName, prefix) {

@@ -7,7 +7,7 @@
 ```
 dependencies {
 	...
-	compile 'com.mirego.annimon:stream:1.2.15'
+	compile 'com.mirego.annimon:stream:1.2.16'
 	...
 }
 ```
@@ -17,7 +17,7 @@ dependencies {
 - Ajouter la dépendance dans votre `*core.podspec.template`
 
 ```
-s.dependency 'lightweight-stream-api', '1.2.15'
+s.dependency 'lightweight-stream-api', '1.2.16'
 ```
 
 ## Header mapping pour iOS
