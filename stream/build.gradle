@@ -3,7 +3,7 @@ plugins {
     id 'me.champeau.gradle.jmh'
     id 'mirego.publish' version '1.0'
     id 'mirego.release' version '1.13'
-    id 'mirego.j2objc' version '1.59'
+    id 'mirego.j2objc' version '1.60'
 }
 
 archivesBaseName = 'stream'
@@ -27,6 +27,7 @@ repositories {
 dependencies {
     testImplementation group: 'junit', name: 'junit', version: '4.12'
     testImplementation 'org.hamcrest:hamcrest-library:1.3'
+    testImplementation 'org.slf4j:slf4j-log4j12:1.7.30'
     testImplementation project(':streamTest')
 }
 
@@ -43,8 +44,8 @@ jmh {
 }
 
 task sourceJar(type: Jar) {
+    archiveClassifier.set('sources')
     from sourceSets.main.allJava
-    classifier = 'sources'
 }
 
 j2objc {
@@ -60,27 +61,7 @@ j2objc {
             'com.annimon.stream.*': 'CAS'
     ]
 
-    options = '-encoding UTF-8 -Werror --build-closure --doc-comments --generate-deprecated -J-Xmx2G --no-package-directories --nullability --swift-friendly --header-mapping header-mapping.j2objc'
-}
-
-tasks['j2objc'].doLast {
-    // Some hacking:
-    // The following files generate header file names that clash with jre-emul after transpilling
-    // Renaming header and source files to CAS*.h and CAS*.m and the --header-mapping replace the #include references
-    renameHeader('Optional', 'CAS') // Optional.java
-    renameHeader('Function', 'CAS') // Function.java
-    renameHeader('Objects', 'CAS') // Objects.java
-    renameHeader('Predicate', 'CAS') // Predicate.java
-    renameHeader('Supplier', 'CAS') // Supplier.java
-    renameHeader('Stream', 'CAS') // Stream.java
-}
-
-def renameHeader(fileName, prefix) {
-    def genDir = file(project.extensions['j2objc'].generatedDir)
-    new File(genDir, fileName +'.h').renameTo(new File(genDir, prefix + fileName + '.h'))
-    def mFile = new File(genDir, fileName + '.m')
-    mFile.text = mFile.text.replaceAll('#include "' + fileName + '.h"', '#include "' + prefix + fileName + '.h"')
-    mFile.renameTo(new File(genDir, prefix + fileName+ '.m'))
+    options = '-encoding UTF-8 -Werror --build-closure --doc-comments --generate-deprecated -J-Xmx2G --nullability --swift-friendly'
 }
 
 release {
