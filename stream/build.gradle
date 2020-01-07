@@ -27,6 +27,7 @@ repositories {
 dependencies {
     testImplementation group: 'junit', name: 'junit', version: '4.12'
     testImplementation 'org.hamcrest:hamcrest-library:1.3'
+    testImplementation 'org.slf4j:slf4j-log4j12:1.7.30'
     testImplementation project(':streamTest')
 }
 
@@ -43,8 +44,8 @@ jmh {
 }
 
 task sourceJar(type: Jar) {
+    archiveClassifier.set('sources')
     from sourceSets.main.allJava
-    classifier = 'sources'
 }
 
 j2objc {
@@ -60,7 +61,7 @@ j2objc {
             'com.annimon.stream.*': 'CAS'
     ]
 
-	options = '-encoding UTF-8 -Werror --build-closure --doc-comments --generate-deprecated -J-Xmx2G --nullability --swift-friendly'
+    options = '-encoding UTF-8 -Werror --build-closure --doc-comments --generate-deprecated -J-Xmx2G --nullability --swift-friendly'
 }
 
 release {
