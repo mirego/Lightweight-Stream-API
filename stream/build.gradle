@@ -49,7 +49,7 @@ task sourceJar(type: Jar) {
 }
 
 j2objc {
-    version = '1.0.0.2'
+    version = '2.4'
 
     podName = 'lightweight-stream-api'
     podspecFile = "../${j2objc.podName}.podspec"
