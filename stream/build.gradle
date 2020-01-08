@@ -49,7 +49,7 @@ task sourceJar(type: Jar) {
 }
 
 j2objc {
-    version = '1.0.0.2'
+    version = '2.4'
 
     podName = 'lightweight-stream-api'
     podspecFile = "../${j2objc.podName}.podspec"
@@ -82,3 +82,17 @@ publishing {
         }
     }
 }
+
+task generateHeaderMappingFile {
+    doLast {
+        def metaInfFolder = new File(sourceSets.main.output.resourcesDir, "META-INF/")
+        def mappingFile = new File(metaInfFolder, "lightweight-stream-api-header-mapping.j2objc")
+        def rootDir = sourceSets.main.allJava.srcDirs[0]
+        sourceSets.main.allJava.sourceDirectories.asFileTree.files.each {
+            def filePath = it.toString().substring(rootDir.toString().size(), it.toString().size() - ".java".size())
+            mappingFile << "${filePath.substring(1).replaceAll("/", ".")}=${filePath.substring(1)}.h\n"
+        }
+	}
+}
+
+tasks['j2objc_prefixes'].finalizedBy generateHeaderMappingFile
