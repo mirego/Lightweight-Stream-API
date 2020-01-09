@@ -26,7 +26,7 @@ Les fichiers `.h` générés pour `lightweight-stream-api` entrent en conflit av
 
 Un fichier de header mappings est livré à même le `.jar` dans les META-INF. Il s'appelle `lightweight-stream-api-header-mapping.j2objc`
 
-Pour être en mesure d'utiliser ce fichier lors de la transpilation de votre projet, ajoutez ceci à votre build script de core:
+Pour être en mesure d'utiliser ce fichier lors de la transpilation de votre projet, ajouter ceci à votre build.gradle de core:
 
 ```groovy
 task extractStreamHeaderMapping {
@@ -49,7 +49,7 @@ tasks['j2objc'].dependsOn extractStreamHeaderMapping
 
 ### Si votre projet n'a pas de header mapping
 
-Ajoutez l'option `--header-mapping` au plugin j2objc
+Ajouter l'option `--header-mapping` au plugin j2objc
 
 ```groovy
 j2objc {
@@ -59,9 +59,9 @@ j2objc {
 }
 ```
 
-### Si le votre projet a déjà du header mapping
+### Si votre projet a déjà du header mapping
 
-- Localisez l'option `--header-mapping` dans la configuration de votre plugin j2objc et ajoutez le 2e fichier:
+- Localiser l'option `--header-mapping` dans la configuration de votre plugin j2objc et y ajouter le 2e fichier:
 
 ```groovy
 ... --header-mapping header-mapping.j2objc,dependencies-header-mapping.j2objc ...
