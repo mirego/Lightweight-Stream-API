@@ -7,7 +7,7 @@
 ```groovy
 dependencies {
     ...
-    compile 'com.mirego.annimon:stream:1.2.17'
+    compile 'com.mirego.annimon:stream:1.2.18'
     ...
 }
 ```
@@ -17,7 +17,7 @@ dependencies {
 - Ajouter la dépendance dans votre `*core.podspec.template`
 
 ```ruby
-s.dependency 'lightweight-stream-api', '1.2.17'
+s.dependency 'lightweight-stream-api', '1.2.18'
 ```
 
 ## Header mapping pour iOS
