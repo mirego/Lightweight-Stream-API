@@ -1,5 +1,5 @@
 Pod::Spec.new do |s|
-  s.name     = 'lightweight-stream-api'
+  s.name     = '${podName}'
   s.version  = '${project.version}'
   s.license  = { :type => 'PRIVATE', :text => 'PRIVATE' }
   s.summary  = 'Stream api port to Java 7.'
@@ -10,6 +10,7 @@ Pod::Spec.new do |s|
 
   s.prepare_command = <<-CMD
     export ANDROID_HOME="\${ANDROID_HOME:-\$HOME/Library/Android/sdk}"
+    export J2OBJC_VERSION="${j2objcVersion}"
     ./gradlew j2objc
   CMD
 
@@ -21,5 +22,5 @@ Pod::Spec.new do |s|
   s.source_files = 'stream-j2objc/**/*.{h,m}'
   s.header_mappings_dir = 'stream-j2objc'
 
-  s.dependency 'J2ObjC@mirego', '>= ${project.j2objc.version}'
+  s.dependency 'J2ObjC@mirego', '>= ${j2objcVersion}'
 end
