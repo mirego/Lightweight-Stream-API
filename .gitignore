@@ -16,4 +16,4 @@
 local.properties
 
 stream-j2objc
-lightweight-stream-api.podspec
+lightweight-stream-api*.podspec
