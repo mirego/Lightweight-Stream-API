@@ -7,8 +7,8 @@ Context context = Context.load(this)
 context.standardFolders()
 
 job(context.jobFullName) {
-    description("CI check of $projectName")
-    logRotator(5)
+    description("CI check of ${context.project}")
+    logRotator(5, 5)
     scm {
         git {
             branch("${GIT_BRANCH}")
