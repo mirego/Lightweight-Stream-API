@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
-  s.name     = '${podName}'
-  s.version  = '${project.version}'
+  s.name     = 'lightweight-stream-api'
+  s.version  = '1.2.20-SNAPSHOT'
   s.license  = { :type => 'PRIVATE', :text => 'PRIVATE' }
   s.summary  = 'Stream api port to Java 7.'
   s.homepage = 'http://www.mirego.com'
@@ -9,8 +9,8 @@ Pod::Spec.new do |s|
   s.requires_arc = false
 
   s.prepare_command = <<-CMD
-    export ANDROID_HOME="\${ANDROID_HOME:-\$HOME/Library/Android/sdk}"
-    export J2OBJC_VERSION="\${J2OBJC_VERSION:-${j2objcVersion}}"
+    export ANDROID_HOME="${ANDROID_HOME:-$HOME/Library/Android/sdk}"
+    export J2OBJC_VERSION="${J2OBJC_VERSION:-1.0.0.2}"
     ./gradlew j2objc_pod
   CMD
 
@@ -22,6 +22,6 @@ Pod::Spec.new do |s|
   s.source_files = 'stream-j2objc/**/*.{h,m}'
   s.header_mappings_dir = 'stream-j2objc'
 
-  s.dependency 'J2ObjC@mirego', '>= ${j2objcVersion}'
+  s.dependency 'J2ObjC@mirego', '>= 1.0.0.2'
   s.dependency 'J2ObjC@mirego/jsr305'
 end

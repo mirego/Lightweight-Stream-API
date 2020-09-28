@@ -2,8 +2,8 @@ plugins {
     id 'java-library'
     id 'me.champeau.gradle.jmh'
     id 'mirego.publish' version '1.0'
-    id 'mirego.release' version '1.13'
-    id 'mirego.j2objc' version '1.66'
+    id 'mirego.release' version '2.0'
+    id 'mirego.j2objc' version '1.69'
 }
 
 archivesBaseName = 'stream'
@@ -50,7 +50,7 @@ task sourceJar(type: Jar) {
 
 j2objc {
     version = '2.4'
-    supportedVersions = ['1.0.0.2', '2.4', '2.5']
+    supportedVersions = ['1.0.0.2', '2.4', '2.5', '2.6', '2.7']
 
     podName = 'lightweight-stream-api'
     podspecFile = "../${j2objc.podName}.podspec"
@@ -61,13 +61,30 @@ j2objc {
     prefixes = [
             'com.annimon.stream.*': 'CAS'
     ]
+}
 
-    options = '-encoding UTF-8 -Werror --build-closure --doc-comments --generate-deprecated -J-Xmx2G --nullability --swift-friendly'
+dependencies {
+    compile "com.google.j2objc:j2objc-annotations:$j2objc.annotationsVersion"
 }
 
 release {
-    checkTasks = ['check']
-    buildTasks = ['publish', 'j2objc_repo_push_quick']
+    checkTasks = [
+        'check',
+        'j2objc_pod'
+    ]
+
+    preTagCommitTasks = [
+        'j2objc_podspec'
+    ]
+    
+    buildTasks = [
+        'publish',
+        'j2objc_repo_push_quick'
+    ]
+
+    commitNewVersionTasks = [
+        'j2objc_podspec'
+    ]
 
     updateVersionPart = 2
 
@@ -79,7 +96,6 @@ publishing {
         maven(MavenPublication) {
             from components.java
             artifact sourceJar
-            artifact j2objc_zip
         }
     }
 }
