@@ -59,8 +59,11 @@ j2objc {
     generatedTargetDir = "${project.name}-j2objc"
 
     prefixes = [
-            'com.annimon.stream.*': 'CAS'
+        'com.annimon.stream.*': 'CAS'
     ]
+
+    //Rewrite options to ommit --no-package-directories
+    options = '-encoding UTF-8 -Werror --build-closure --doc-comments --generate-deprecated -J-Xmx2G --nullability --swift-friendly'
 }
 
 dependencies {
@@ -76,7 +79,7 @@ release {
     preTagCommitTasks = [
         'j2objc_podspec'
     ]
-    
+
     buildTasks = [
         'publish',
         'j2objc_repo_push_quick'
@@ -109,7 +112,7 @@ task generateHeaderMappingFile {
             def filePath = it.toString().substring(rootDir.toString().size(), it.toString().size() - ".java".size())
             mappingFile << "${filePath.substring(1).replaceAll("/", ".")}=${filePath.substring(1)}.h\n"
         }
-	}
+    }
 }
 
 tasks['j2objc_prefixes'].finalizedBy generateHeaderMappingFile
