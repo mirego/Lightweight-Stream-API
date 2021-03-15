@@ -390,6 +390,7 @@ public final class ComparatorCompat<T> implements Comparator<T> {
      * @return a comparator
      */
     @SuppressWarnings("unchecked")
+    @Deprecated
     public Comparator<T> comparator() {
         return (Comparator<T>) comparator;
     }
