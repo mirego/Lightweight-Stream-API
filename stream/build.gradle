@@ -20,7 +20,7 @@ if (!hasProperty('mainClass')) {
 
 repositories {
     mavenLocal()
-    jcenter()
+    mavenCentral()
     delegate.miregoPublic()
 }
 
@@ -64,7 +64,7 @@ j2objc {
         'com.annimon.stream.*': 'CAS'
     ]
 
-    //Rewrite options to ommit --no-package-directories
+    //Rewrite options to omit --no-package-directories
     options = '-encoding UTF-8 -Werror --build-closure --doc-comments --generate-deprecated -J-Xmx2G --nullability --swift-friendly'
 }
 
