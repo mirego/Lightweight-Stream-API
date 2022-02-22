@@ -3,7 +3,7 @@ plugins {
     id 'me.champeau.gradle.jmh'
     id 'mirego.publish' version '1.0'
     id 'mirego.release' version '2.0'
-    id 'mirego.j2objc' version '2.7'
+    id 'mirego.j2objc' version '1.69'
 }
 
 archivesBaseName = 'stream'
@@ -50,9 +50,7 @@ task sourceJar(type: Jar) {
 
 j2objc {
     version = '2.4'
-    supportedVersions = [
-        'mirego': ['1.0.0.2', '2.4', '2.5', '2.6', '2.7']
-    ]
+    supportedVersions = ['1.0.0.2', '2.4', '2.5', '2.6', '2.7']
 
     podName = 'lightweight-stream-api'
     podspecFile = "../${j2objc.podName}.podspec"
