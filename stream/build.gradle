@@ -1,16 +1,20 @@
 plugins {
     id 'java-library'
-    id 'me.champeau.gradle.jmh'
-    id 'mirego.publish' version '1.0'
-    id 'mirego.release' version '2.0'
-    id 'mirego.j2objc' version '1.69'
+    id 'mirego.publish' version '1.6'
+    id 'mirego.release' version '2.10'
+    id 'mirego.j2objc' version '3.1'
 }
 
-archivesBaseName = 'stream'
 group = 'com.mirego.annimon'
 
-sourceCompatibility = '1.7'
-targetCompatibility = '1.7'
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+base {
+    archivesName = 'stream'
+}
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
@@ -31,26 +35,16 @@ dependencies {
     testImplementation project(':streamTest')
 }
 
-cobertura {
-    coverageExcludes = ['.*com\\.annimon\\.stream\\.internal\\.Compat.*']
-}
-
-jmh {
-    benchmarkMode = ['Throughput']
-    fork = 2
-    threads = 2
-    warmupIterations = 3
-    iterations = 5
-}
-
 task sourceJar(type: Jar) {
     archiveClassifier.set('sources')
     from sourceSets.main.allJava
 }
 
 j2objc {
-    version = '2.4'
-    supportedVersions = ['1.0.0.2', '2.4', '2.5', '2.6', '2.7']
+    version = '3.1'
+    supportedVersions = [
+        'mirego': ['2.4', '2.5', '2.6', '2.7', '3.1']
+    ]
 
     podName = 'lightweight-stream-api'
     podspecFile = "../${j2objc.podName}.podspec"
@@ -67,7 +61,12 @@ j2objc {
 }
 
 dependencies {
-    compile "com.google.j2objc:j2objc-annotations:$j2objc.annotationsVersion"
+    implementation "com.google.j2objc:j2objc-annotations:$j2objc.annotationsVersion"
+}
+
+// Gradle 9 requires explicit dependency on j2objc_prefixes for test compilation
+tasks.matching { it.name =~ /compileTest(Java|Groovy)/ }.configureEach {
+    dependsOn 'j2objc_prefixes'
 }
 
 release {
