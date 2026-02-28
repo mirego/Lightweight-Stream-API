@@ -1,0 +1,36 @@
+name: Release
+
+on: workflow_dispatch
+
+jobs:
+  release:
+    name: Release
+    runs-on: ["self-hosted", "xcode-tahoe"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Install asdf tools
+        uses: asdf-vm/actions/install@v4
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v5
+
+      - name: Configure Git
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+
+      - name: Install SSH key
+        uses: mirego/ssh-key-action@v2
+        with:
+          key: ${{ secrets.MIREGO_GITHUB_SSH_PRIVATE_KEY }}
+          known_hosts: unnecessary
+
+      - name: Release
+        env:
+          MAVEN_AWS_KEY: ${{ secrets.MIREGO_MAVEN_AWS_ACCESS_KEY_ID }}
+          MAVEN_AWS_SECRET: ${{ secrets.MIREGO_MAVEN_AWS_SECRET_ACCESS_KEY }}
+        run: ./gradlew clean release -is
