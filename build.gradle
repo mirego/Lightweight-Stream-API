@@ -6,7 +6,7 @@ plugins {
 
 release {
     checkTasks = [
-        'check',
+        'stream:check',
         'stream:j2objc_pod'
     ]
 
