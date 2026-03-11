@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name     = 'lightweight-stream-api@J2ObjC-3.1'
-  s.version  = '1.2.29'
+  s.version  = '1.2.30-SNAPSHOT'
   s.license  = { :type => 'PRIVATE', :text => 'PRIVATE' }
   s.summary  = 'Stream api port to Java 7.'
   s.homepage = 'http://www.mirego.com'
