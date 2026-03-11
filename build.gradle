@@ -1,6 +1,30 @@
 // Plugins
 plugins {
     id "me.champeau.gradle.jmh" version "0.5.0" apply false
+    id 'mirego.release' version "$mirego_release_plugin_version"
+}
+
+release {
+    checkTasks = [
+        'check',
+        'stream:j2objc_pod'
+    ]
+
+    preTagCommitTasks = [
+        'stream:j2objc_podspec'
+    ]
+
+    buildTasks = [
+        'stream:publish',
+        'stream:j2objc_repo_push_quick'
+    ]
+
+    commitNewVersionTasks = [
+        'stream:j2objc_podspec'
+    ]
+
+    updateVersionPart = 2
+    tagPrefix = 'lightweight-stream-'
 }
 
 allprojects {

@@ -1,8 +1,7 @@
 plugins {
     id 'java-library'
-    id 'mirego.publish' version '1.6'
-    id 'mirego.release' version '2.10'
-    id 'mirego.j2objc' version '3.1'
+    id 'mirego.publish' version "$mirego_publish_plugin_version"
+    id 'mirego.j2objc' version "$mirego_j2objc_plugin_version"
 }
 
 group = 'com.mirego.annimon'
@@ -67,30 +66,6 @@ dependencies {
 // Gradle 9 requires explicit dependency on j2objc_prefixes for test compilation
 tasks.matching { it.name =~ /compileTest(Java|Groovy)/ }.configureEach {
     dependsOn 'j2objc_prefixes'
-}
-
-release {
-    checkTasks = [
-        'check',
-        'j2objc_pod'
-    ]
-
-    preTagCommitTasks = [
-        'j2objc_podspec'
-    ]
-
-    buildTasks = [
-        'publish',
-        'j2objc_repo_push_quick'
-    ]
-
-    commitNewVersionTasks = [
-        'j2objc_podspec'
-    ]
-
-    updateVersionPart = 2
-
-    tagPrefix = 'lightweight-stream-'
 }
 
 publishing {
