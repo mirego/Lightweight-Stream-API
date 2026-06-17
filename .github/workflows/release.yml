@@ -29,6 +29,11 @@ jobs:
           key: ${{ secrets.MIREGO_GITHUB_SSH_PRIVATE_KEY }}
           known_hosts: unnecessary
 
+      # Lets `swift package resolve` (in spmPublish's xcframework build) fetch the
+      # J2ObjC runtime SPM package over SSH during release.
+      - name: Use SSH for GitHub HTTPS URLs
+        run: git config --global url."git@github.com:".insteadOf "https://github.com/"
+
       - name: Release
         env:
           MAVEN_AWS_KEY: ${{ secrets.MIREGO_MAVEN_AWS_ACCESS_KEY_ID }}
