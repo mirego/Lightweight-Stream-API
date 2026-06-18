@@ -11,20 +11,56 @@ release {
     ]
 
     preTagCommitTasks = [
-        'stream:j2objc_podspec'
+        'stream:j2objc_podspec',
+        'spmPackage'
     ]
 
     buildTasks = [
         'stream:publish',
-        'stream:j2objc_repo_push_quick'
+        'stream:j2objc_repo_push_quick',
+        'spmPublish'
     ]
 
     commitNewVersionTasks = [
-        'stream:j2objc_podspec'
+        'stream:j2objc_podspec',
+        'spmPackage'
     ]
 
     updateVersionPart = 2
     tagPrefix = 'lightweight-stream-'
+}
+
+// Generate Package.swift from Package.swift.template, single-sourcing the SPM
+// dependency version from gradle.properties (SemVer = "<x.y>" -> "<x.y>.0").
+// Mirrors j2objc_podspec; runs in the release commit hooks so the manifest stays
+// in sync with the runtime dependency version.
+task spmPackage {
+    group = 'Build'
+    description = 'Generate Package.swift from the template using gradle.properties versions.'
+    doLast {
+        def semver = { v -> def b = "${v}"; b.tokenize('.').size() >= 3 ? b : "${b}.0" }
+        file('Package.swift').text = file('Package.swift.template').text
+                .replace('@J2OBJC_SPM_VERSION@', semver(j2objc_version))
+    }
+}
+
+// Build the xcframework and publish its SPM SemVer tag (e.g. 1.2.30). Runs in
+// `release` (buildTasks) after the J2ObjC transpile. On CI it commits the
+// xcframework + manifest and pushes the tag; locally it is a build-only dry run.
+task spmPublish(type: Exec) {
+    group = 'Release'
+    description = 'Build the xcframework and publish its SPM SemVer tag.'
+    // Ensure the generated Obj-C exists in THIS gradle invocation (the release
+    // plugin runs build tasks in a separate invocation from the check phase).
+    dependsOn ':stream:j2objc'
+    workingDir = rootDir
+    commandLine 'bash', 'scripts/spm-publish.sh'
+    doFirst {
+        def base = project.version.toString().replaceAll(/-SNAPSHOT$/, '')
+        def semver = base.tokenize('.').size() >= 3 ? base : "${base}.0"
+        environment 'SPM_VERSION', semver
+        environment 'PUBLISH', (System.getenv('GITHUB_ACTIONS') ? '1' : '0')
+    }
 }
 
 allprojects {
