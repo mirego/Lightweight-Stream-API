@@ -17,9 +17,9 @@ local.properties
 
 stream-j2objc
 
-# SwiftPM: generated manifest + local build artifacts. The xcframework is NOT kept
-# on the branch — spm-publish.sh attaches it only to the SemVer release tag.
-/Package.swift
+# SwiftPM local build artifacts. Package.swift IS tracked (generated from the
+# template but committed so it rides the release tag, like the other libs). The
+# xcframework is NOT kept on the branch — spm-publish.sh attaches it only to the tag.
 /Package.resolved
 /.build/
 /build-xcframework/
